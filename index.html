@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Abdula Adil — AI & Full Stack Engineer</title>
+<meta name="description" content="Abdula Adil — AI & Full Stack Engineer in Abu Dhabi. LLM integration, Python FastAPI AI microservices, agentic engineering with Claude Code, and full-stack delivery across .NET, Angular, React and React Native." />
+<meta property="og:title" content="Abdula Adil — AI & Full Stack Engineer" />
+<meta property="og:description" content="LLM-powered enterprise systems, FastAPI AI microservices, agentic engineering with Claude Code, and full-stack delivery. Abu Dhabi, UAE." />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#0b0f14" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0b0f14;
+    --bg-2: #10161d;
+    --card: #131a22;
+    --line: #1f2a36;
+    --text: #e6edf3;
+    --muted: #8b98a7;
+    --accent: #2dd4bf;
+    --accent-2: #60a5fa;
+    --radius: 14px;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11,15,20,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { font-family: var(--mono); font-weight: 500; color: var(--accent); letter-spacing: 0.5px; }
+  .logo span { color: var(--muted); }
+  .nav-links { display: flex; gap: 26px; font-size: 14px; color: var(--muted); }
+  .nav-links a:hover { color: var(--text); }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  /* Hero */
+  .hero { padding: 96px 0 72px; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: -40% -20% auto auto; width: 640px; height: 640px;
+    background: radial-gradient(circle, rgba(45,212,191,0.16), transparent 65%);
+    pointer-events: none;
+  }
+  .status {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 13px; color: var(--muted);
+    border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px;
+    background: var(--bg-2);
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 4px rgba(34,197,94,0.15); }
+  .hero h1 { font-size: clamp(40px, 7vw, 68px); line-height: 1.05; font-weight: 800; letter-spacing: -1.5px; margin: 24px 0 12px; }
+  .hero h2 {
+    font-size: clamp(20px, 3vw, 26px); font-weight: 600;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin-bottom: 20px;
+  }
+  .hero p.lead { font-size: 18px; color: var(--muted); max-width: 680px; }
+  .cta { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px; border-radius: 10px; font-weight: 600; font-size: 15px;
+    border: 1px solid var(--line); transition: all .15s ease;
+  }
+  .btn.primary { background: var(--accent); color: #04211d; border-color: var(--accent); }
+  .btn.primary:hover { filter: brightness(1.08); }
+  .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Stats */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-top: 64px; }
+  .stat { background: var(--bg-2); padding: 22px 20px; }
+  .stat b { display: block; font-size: 26px; font-weight: 800; color: var(--text); }
+  .stat span { font-size: 13px; color: var(--muted); }
+  @media (max-width: 760px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+  /* Sections */
+  section { padding: 80px 0; border-top: 1px solid var(--line); }
+  .eyebrow { font-family: var(--mono); font-size: 13px; color: var(--accent); margin-bottom: 10px; }
+  .section-title { font-size: clamp(28px, 4vw, 36px); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 14px; }
+  .section-sub { color: var(--muted); max-width: 680px; margin-bottom: 40px; }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 860px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 26px; transition: border-color .15s ease, transform .15s ease;
+  }
+  .card:hover { border-color: #2b3a4a; transform: translateY(-2px); }
+  .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: 15px; }
+  .icon {
+    width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
+    background: rgba(45,212,191,0.1); color: var(--accent); font-family: var(--mono); font-size: 16px; margin-bottom: 16px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .tag {
+    font-family: var(--mono); font-size: 12px; color: #b6c2cf;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 3px 9px;
+  }
+
+  /* Featured research */
+  .feature {
+    background: linear-gradient(135deg, rgba(45,212,191,0.08), rgba(96,165,250,0.06));
+    border: 1px solid #1f3b3b; border-radius: 18px; padding: 36px;
+  }
+  .feature h3 { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+  .feature .meta { font-family: var(--mono); font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+  .pipeline { display: flex; align-items: stretch; gap: 10px; margin: 26px 0; flex-wrap: wrap; }
+  .stage {
+    flex: 1 1 160px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px;
+  }
+  .stage small { font-family: var(--mono); color: var(--accent); font-size: 12px; display: block; margin-bottom: 4px; }
+  .stage div { font-size: 14px; color: var(--text); font-weight: 500; }
+  .arrow { align-self: center; color: var(--muted); font-family: var(--mono); }
+  @media (max-width: 760px) { .arrow { display: none; } }
+  .feature ul { list-style: none; display: grid; gap: 12px; }
+  .feature li { color: var(--muted); padding-left: 22px; position: relative; font-size: 15px; }
+  .feature li::before { content: "›"; position: absolute; left: 4px; color: var(--accent); font-weight: 700; }
+  .feature li b { color: var(--text); font-weight: 600; }
+
+  /* Projects */
+  .project .label { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-bottom: 10px; display: block; }
+
+  /* Timeline */
+  .timeline { position: relative; display: grid; gap: 22px; }
+  .job { display: grid; grid-template-columns: 200px 1fr; gap: 28px; }
+  .job .when { font-family: var(--mono); font-size: 13px; color: var(--muted); padding-top: 4px; }
+  .job h3 { font-size: 18px; font-weight: 700; }
+  .job .org { color: var(--accent); font-weight: 500; font-size: 15px; margin-bottom: 12px; }
+  .job ul { list-style: none; display: grid; gap: 8px; }
+  .job li { color: var(--muted); font-size: 15px; padding-left: 18px; position: relative; }
+  .job li::before { content: ""; position: absolute; left: 2px; top: 10px; width: 6px; height: 6px; border-radius: 50%; background: #2b3a4a; }
+  .job li b { color: var(--text); font-weight: 600; }
+  @media (max-width: 760px) { .job { grid-template-columns: 1fr; gap: 6px; } }
+
+  /* Skills */
+  .skill-group h4 { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
+
+  /* Contact */
+  .contact-box {
+    text-align: center; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 56px 28px;
+  }
+  .contact-box h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 12px; }
+  .contact-box p { color: var(--muted); max-width: 560px; margin: 0 auto 28px; }
+  .contact-box .cta { justify-content: center; }
+  .facts { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px 22px; margin-top: 30px; font-size: 13px; color: var(--muted); }
+
+  footer { padding: 36px 0; text-align: center; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="logo">abdula<span>.adil</span></a>
+    <div class="nav-links">
+      <a href="#services">What I do</a>
+      <a href="#research">Research</a>
+      <a href="#work">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="status"><span class="dot"></span> Open to full-time roles &amp; freelance projects · Abu Dhabi, UAE</div>
+    <h1>Abdula Adil</h1>
+    <h2>AI &amp; Full Stack Engineer</h2>
+    <p class="lead">I build LLM-powered systems for enterprises — from Python FastAPI inference services and natural-language access to business data, to the web and mobile apps engineers use in the field. I ship fast with agentic AI workflows, without cutting corners on architecture or security.</p>
+    <div class="cta">
+      <a class="btn primary" href="#contact">Get in touch →</a>
+      <a class="btn ghost" href="https://linkedin.com/in/abdulaadil" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn ghost" href="#research">See my research</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>Sole</b><span>AI engineer on a full-scale ERP platform</span></div>
+      <div class="stat"><b>3×</b><span>Employee of the Month (2025–2026)</span></div>
+      <div class="stat"><b>&lt;35 ms</b><span>Safety decision latency in simulation (Laya)</span></div>
+      <div class="stat"><b>6+</b><span>Stacks shipped: .NET, Python, Angular, React, React Native, Laravel</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="services">
+  <div class="wrap">
+    <div class="eyebrow">// what I do</div>
+    <h2 class="section-title">How I can help</h2>
+    <p class="section-sub">Whether you're hiring or need something built, these are the areas where I deliver the most value.</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="icon">◆</div>
+        <h3>LLM integration for business systems</h3>
+        <p>Natural-language access to enterprise data (NL→SQL, RAG-style retrieval over SQL Server), conversational assistants for web and mobile, and inference tuned for real workloads.</p>
+        <div class="tags"><span class="tag">Ollama</span><span class="tag">Semantic Kernel</span><span class="tag">vLLM</span><span class="tag">RAG</span><span class="tag">Fine-tuning</span></div>
+      </div>
+      <div class="card">
+        <div class="icon">⚡</div>
+        <h3>AI microservices</h3>
+        <p>Independently deployable Python FastAPI services for inference, retrieval and model serving — async, validated, Dockerized, and integrated cleanly with existing .NET backends over REST.</p>
+        <div class="tags"><span class="tag">FastAPI</span><span class="tag">Pydantic</span><span class="tag">Docker</span><span class="tag">REST</span></div>
+      </div>
+      <div class="card">
+        <div class="icon">&gt;_</div>
+        <h3>Agentic engineering with Claude Code</h3>
+        <p>Setting up AI-assisted development that actually holds up: context and token optimization, reusable custom agent skills, disciplined prompting, robust error handling and secure configurations — so teams ship faster without losing control.</p>
+        <div class="tags"><span class="tag">Claude Code</span><span class="tag">Agent skills</span><span class="tag">Prompt engineering</span><span class="tag">Context / token optimization</span></div>
+      </div>
+      <div class="card">
+        <div class="icon">▣</div>
+        <h3>Full stack &amp; mobile delivery</h3>
+        <p>End-to-end products across ASP.NET Core (Clean Architecture, CQRS), Angular, React and React Native — from API design to the app in an engineer's hands.</p>
+        <div class="tags"><span class="tag">ASP.NET Core</span><span class="tag">Angular</span><span class="tag">React</span><span class="tag">React Native</span><span class="tag">SQL Server</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="research">
+  <div class="wrap">
+    <div class="eyebrow">// current research</div>
+    <h2 class="section-title">The Industrial Reflex</h2>
+    <p class="section-sub">Independent research into edge AI that makes safety decisions in milliseconds on offshore and industrial sites — fully offline.</p>
+
+    <div class="feature">
+      <h3>Laya — Edge AI Architecture</h3>
+      <div class="meta">Independent research thesis · Ongoing · Demo videos on LinkedIn</div>
+
+      <div class="pipeline">
+        <div class="stage"><small>SCADA</small><div>Modbus / OPC UA telemetry</div></div>
+        <div class="arrow">→</div>
+        <div class="stage"><small>&lt;2 ms</small><div>Local protocol translation</div></div>
+        <div class="arrow">→</div>
+        <div class="stage"><small>~33 ms</small><div>Parallel inference pass</div></div>
+        <div class="arrow">→</div>
+        <div class="stage"><small>&lt;35 ms</small><div>Shutdown valve decision</div></div>
+      </div>
+
+      <ul>
+        <li><b>System 1 — reflex layer:</b> a small on-site model triages every field report and alarm in ~35 ms — equipment type, possible gas release with confidence score, permit-to-work need and urgency — then deterministic rules page the control room, log, or escalate.</li>
+        <li><b>System 2 — reasoning layer:</b> only complex questions reach a local LLM grounded in site procedures, which returns a short step-by-step action plan to the technician's tablet and drafts compliance and incident reports.</li>
+        <li><b>Offline by design:</b> no cloud dependency, built for low-connectivity platforms.</li>
+        <li><b>Human-in-the-loop:</b> guidance is advisory; people make the final call. Simulated decision latency under 35 ms versus ~8.5 s typical operator response.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="eyebrow">// selected work</div>
+    <h2 class="section-title">Projects</h2>
+    <p class="section-sub">Enterprise systems I've designed and built at Velosi Asset Integrity.</p>
+
+    <div class="grid-3">
+      <div class="card project">
+        <span class="label">Solo · Current</span>
+        <h3>VAIL ERP — AI Development</h3>
+        <p>Designing and building AI capabilities from scratch for a full-scale ERP — natural-language access to Inventory, Sales, HR and Finance data through FastAPI AI microservices alongside the .NET core. Owning architecture through delivery.</p>
+        <div class="tags"><span class="tag">ASP.NET Core</span><span class="tag">FastAPI</span><span class="tag">Ollama</span><span class="tag">Semantic Kernel</span><span class="tag">SQL Server</span></div>
+      </div>
+      <div class="card project">
+        <span class="label">AI Assistant + Mobile</span>
+        <h3>VAIL-Plant</h3>
+        <p>Built the core mobile app solo — asset inspection, maintenance planning, risk assessment and reporting — plus conversational AI front-ends on Angular and React Native, with vLLM-optimized inference.</p>
+        <div class="tags"><span class="tag">React Native CLI</span><span class="tag">Angular</span><span class="tag">FastAPI</span><span class="tag">vLLM</span></div>
+      </div>
+      <div class="card project">
+        <span class="label">Process Safety</span>
+        <h3>VAIL-AIPS</h3>
+        <p>Process safety, hazard management and compliance tracking modules with dashboards, reporting and risk tracking — Clean Architecture across the stack.</p>
+        <div class="tags"><span class="tag">React Native CLI</span><span class="tag">ASP.NET Core</span><span class="tag">MySQL</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="eyebrow">// experience</div>
+    <h2 class="section-title">Where I've worked</h2>
+    <div style="height:24px"></div>
+
+    <div class="timeline">
+      <div class="job">
+        <div class="when">Jan 2025 — Present<br/>Abu Dhabi, UAE</div>
+        <div>
+          <h3>Software Developer — AI &amp; Full Stack</h3>
+          <div class="org">Velosi Asset Integrity Ltd</div>
+          <ul>
+            <li><b>Sole engineer driving AI development</b> for the VAIL ERP platform — architecture, implementation and delivery end-to-end.</li>
+            <li>Built <b>Python FastAPI microservices</b> for LLM inference, retrieval and natural-language querying, containerized and integrated with ASP.NET Core so AI scales independently of the core ERP.</li>
+            <li>Co-developed AI services with <b>Ollama and Semantic Kernel</b> for natural-language querying of plant and asset data; optimized inference throughput with <b>vLLM</b>.</li>
+            <li>Applied <b>Clean Architecture + CQRS/MediatR</b> for transactional .NET modules and lightweight microservices for Python-native AI.</li>
+            <li>Delivered a <b>3-day onsite training program for Sonatrach</b> (Algeria) engineering teams — live demos, real-time technical support and adoption documentation.</li>
+            <li>Accelerated delivery with <b>agentic AI workflows</b> — Claude Code, context/token optimization and custom reusable agent skills.</li>
+            <li><b>Employee of the Month ×3</b> — Sep 2025, Feb 2026, May 2026.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="job">
+        <div class="when">Feb 2024 — Apr 2024<br/>Dubai (Remote)</div>
+        <div>
+          <h3>Web Development &amp; Digital Marketing Intern</h3>
+          <div class="org">Almasat Information Technology</div>
+          <ul><li>Developed and optimized web content platforms, improving SEO and search visibility across client sites.</li></ul>
+        </div>
+      </div>
+      <div class="job">
+        <div class="when">Aug 2023 — Sep 2023<br/>Kochi, India</div>
+        <div>
+          <h3>Vulnerability Analyst Intern</h3>
+          <div class="org">Red Team Hackers</div>
+          <ul><li>Conducted a full penetration test (DC-1) and delivered a structured vulnerability report with remediation recommendations.</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="eyebrow">// toolkit</div>
+    <h2 class="section-title">Skills</h2>
+    <div style="height:24px"></div>
+
+    <div class="grid-3">
+      <div class="card skill-group">
+        <h4>AI &amp; LLM</h4>
+        <div class="tags"><span class="tag">Ollama</span><span class="tag">Semantic Kernel</span><span class="tag">vLLM</span><span class="tag">RAG</span><span class="tag">NL→SQL</span><span class="tag">Prompt engineering</span><span class="tag">Fine-tuning</span><span class="tag">LangChain / LangGraph</span><span class="tag">Claude Code</span><span class="tag">Agent skills</span></div>
+      </div>
+      <div class="card skill-group">
+        <h4>Backend &amp; Architecture</h4>
+        <div class="tags"><span class="tag">ASP.NET Core</span><span class="tag">C#</span><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">PHP / Laravel</span><span class="tag">EF Core</span><span class="tag">CQRS + MediatR</span><span class="tag">Clean Architecture</span><span class="tag">SignalR</span><span class="tag">JWT</span><span class="tag">Microservices</span></div>
+      </div>
+      <div class="card skill-group">
+        <h4>Frontend &amp; Mobile</h4>
+        <div class="tags"><span class="tag">React Native (CLI &amp; Expo)</span><span class="tag">React + Vite</span><span class="tag">Angular</span><span class="tag">Astro</span><span class="tag">TypeScript</span><span class="tag">Redux</span><span class="tag">Zustand</span><span class="tag">MobX</span></div>
+      </div>
+      <div class="card skill-group">
+        <h4>Data &amp; BI</h4>
+        <div class="tags"><span class="tag">SQL Server</span><span class="tag">Query optimization</span><span class="tag">MySQL</span><span class="tag">Firebase</span><span class="tag">Power BI</span></div>
+      </div>
+      <div class="card skill-group">
+        <h4>Cloud &amp; DevOps</h4>
+        <div class="tags"><span class="tag">Docker</span><span class="tag">Git / GitHub</span><span class="tag">Azure</span><span class="tag">Vercel</span><span class="tag">Production deployments</span></div>
+      </div>
+      <div class="card skill-group">
+        <h4>Security &amp; Practice</h4>
+        <div class="tags"><span class="tag">OWASP Top 10</span><span class="tag">Secure coding</span><span class="tag">VAPT</span><span class="tag">Agile / Scrum</span><span class="tag">Technical documentation</span><span class="tag">Client training</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h3>Education</h3>
+      <p>Bachelor of Engineering, Computer Science — P.A. College of Engineering, Mangalore (VTU), 2024 · Recognized by the UAE Ministry of Higher Education (MoHESR)</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box">
+      <div class="eyebrow">// let's talk</div>
+      <h2>Hiring, or need an AI build?</h2>
+      <p>I'm open to full-time engineering roles and freelance projects — LLM integration, AI microservices, Claude Code workflow setup, or full-stack delivery.</p>
+      <div class="cta">
+        <a class="btn primary" href="mailto:adduadil38@gmail.com">adduadil38@gmail.com</a>
+        <a class="btn ghost" href="https://linkedin.com/in/abdulaadil" target="_blank" rel="noopener">Connect on LinkedIn</a>
+      </div>
+      <div class="facts">
+        <span>📍 Abu Dhabi, UAE</span>
+        <span>🛂 UAE Employment Visa</span>
+        <span>⏱ 30-day notice</span>
+        <span>🚗 UAE Driving License</span>
+        <span>🌍 Open to relocate</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© 2026 Abdula Adil · Built with Claude Code, deployed on Vercel</div>
+</footer>
+
+</body>
+</html>
