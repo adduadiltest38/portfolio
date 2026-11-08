@@ -1,0 +1,42 @@
+---
+import HeroScene from '../islands/HeroScene';
+import { person, site } from '../data/profile';
+---
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-canvas" data-hero-canvas>
+    <HeroScene client:only="react" />
+  </div>
+  <div class="container hero-inner">
+    <div class="hero-meta mono" data-hero-fade>
+      <span>[ AI Engineer ]</span>
+      <span class="hide-sm">LLM · Voice AI · Computer Vision</span>
+      <span class="hide-sm">{person.location}</span>
+      <span class="status"><i></i>Available · 30-day notice</span>
+    </div>
+
+    <h1 class="hero-title" id="hero-title">
+      <span class="line"><span data-hero-line>{person.first}</span></span>
+      <span class="line"><span data-hero-line>{person.last}<span class="dot">.</span></span></span>
+      <span class="sr-only"> — AI Engineer and Full-Stack Developer in Abu Dhabi, UAE</span>
+    </h1>
+
+    <div class="hero-bottom">
+      <p class="hero-lede" data-hero-fade>
+        I build AI that <em data-shape-word="0">reasons</em>, <em data-shape-word="1">listens</em> and <em data-shape-word="2">sees</em> —
+        LLM-powered systems for the industrial world, shipped end-to-end from Python microservices to the app in an engineer’s hand.
+      </p>
+      <div class="hero-side" data-hero-fade>
+        <div class="hero-ctas">
+          <a class="btn primary" href="#work" data-magnetic>See the work <span class="arr">→</span></a>
+          <a class="btn" href={site.cv} download data-magnetic>Download CV <span class="arr">↓</span></a>
+        </div>
+        <div class="hero-readout mono" aria-live="off">
+          <span class="k">Now rendering</span><span class="v" data-shape-label><b>01</b> / 03 — LLM core</span>
+          <span class="k">Stack</span><span class="v">.NET · Python · React Native</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue mono" aria-hidden="true"><span>Scroll</span><i></i></div>
+</section>

@@ -1,0 +1,71 @@
+---
+import DemoFrame from './DemoFrame.astro';
+---
+<DemoFrame title="vail-plant · voice assistant">
+  <div data-voice>
+    <div class="voice-flow mono">
+      <span data-vstep="0">🎙 Whisper STT</span><em>→</em><span data-vstep="1">LLM · Ollama + SK</span><em>→</em><span data-vstep="2">🔊 Kokoro TTS</span>
+    </div>
+    <div class="voice-wave" data-vwave aria-hidden="true">{Array.from({ length: 44 }, () => <i></i>)}</div>
+    <div class="bubbles">
+      <div class="bubble user"><small>Field engineer · speaking</small><span data-vuser>When was pump P-204 last inspected?</span></div>
+      <div class="bubble ai"><small>Assistant · speaking</small><span data-vai>12 days ago — vibration within limits. Next inspection is due in 18 days.</span></div>
+    </div>
+  </div>
+</DemoFrame>
+
+<script>
+  import gsap from 'gsap';
+  const root = document.querySelector<HTMLElement>('[data-voice]');
+  if (root && !document.documentElement.classList.contains('reduced')) {
+    const bars = Array.from(root.querySelectorAll<HTMLElement>('[data-vwave] i'));
+    const wave = root.querySelector<HTMLElement>('[data-vwave]')!;
+    const steps = Array.from(root.querySelectorAll<HTMLElement>('[data-vstep]'));
+    const userEl = root.querySelector<HTMLElement>('[data-vuser]')!;
+    const aiEl = root.querySelector<HTMLElement>('[data-vai]')!;
+    const userText = userEl.textContent ?? '';
+    const aiText = aiEl.textContent ?? '';
+    const userBubble = userEl.parentElement!;
+    const aiBubble = aiEl.parentElement!;
+
+    let talking = false;
+    const talk = () => {
+      if (!talking) return;
+      bars.forEach((b, i) => {
+        const env = Math.sin((i / bars.length) * Math.PI);
+        gsap.to(b, { height: `${12 + Math.random() * 88 * env}%`, duration: 0.12, ease: 'sine.inOut' });
+      });
+    };
+    let ticker: number | undefined;
+    const setTalking = (on: boolean, ai = false) => {
+      talking = on;
+      wave.classList.toggle('is-ai', ai);
+      if (on) { talk(); ticker = window.setInterval(talk, 130); }
+      else { window.clearInterval(ticker); gsap.to(bars, { height: '10%', duration: 0.4, stagger: 0.005 }); }
+    };
+    const step = (n: number) => steps.forEach((s, i) => s.classList.toggle('is-on', i === n));
+    const typeInto = (el: HTMLElement, text: string, dur: number) => {
+      const o = { n: 0 };
+      return gsap.to(o, { n: text.length, duration: dur, ease: 'none', onUpdate: () => { el.textContent = text.slice(0, Math.round(o.n)); } });
+    };
+
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 1.2, paused: true });
+    tl.call(() => { userEl.textContent = ''; aiEl.textContent = ''; step(-1); })
+      .set([userBubble, aiBubble], { autoAlpha: 0, y: 10 })
+      .call(() => { step(0); setTalking(true); })
+      .to(userBubble, { autoAlpha: 1, y: 0, duration: 0.4 })
+      .add(typeInto(userEl, userText, 1.8))
+      .call(() => { setTalking(false); step(1); })
+      .to({}, { duration: 1.1 })
+      .call(() => { step(2); setTalking(true, true); })
+      .to(aiBubble, { autoAlpha: 1, y: 0, duration: 0.4 })
+      .add(typeInto(aiEl, aiText, 2.6))
+      .call(() => { setTalking(false); })
+      .to({}, { duration: 1.6 });
+
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) tl.play();
+      else { tl.pause(); setTalking(false); }
+    }, { threshold: 0.3 }).observe(root);
+  }
+</script>

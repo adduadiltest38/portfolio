@@ -1,0 +1,64 @@
+---
+import ReflexPlayer from '../islands/reflex/ReflexPlayer';
+---
+<section class="section research" id="research" aria-labelledby="research-title">
+  <div class="container" style="position:relative">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow mono"><b>04</b> Independent research</div>
+        <h2 class="h2" id="research-title" data-split>The Industrial <span class="serif">Reflex</span></h2>
+      </div>
+      <p class="sec-sub" data-reveal>
+        <b>Laya</b> — a two-tier, fully offline edge-AI architecture that makes safety decisions in milliseconds on offshore and industrial sites.
+        Below is a time-dilated replay of the simulation, rendered live in your browser with Remotion.
+      </p>
+    </div>
+
+    <div data-reveal>
+      <div class="reflex-frame">
+        <div class="reflex-fallback mono">Loading simulation…</div>
+        <ReflexPlayer client:visible />
+      </div>
+      <div class="reflex-frame-bar mono"><span>Remotion composition · 1280×720 · 30 fps · rendered client-side</span><span>Click to replay</span></div>
+    </div>
+
+    <div class="race" data-race>
+      <div class="race-row laya">
+        <div class="who"><b>Laya reflex layer</b><span class="mono">edge · offline</span></div>
+        <div class="race-track"><i data-race-bar="laya"></i></div>
+        <div class="race-time"><span data-race-time="laya">&lt;35</span> ms</div>
+      </div>
+      <div class="race-row">
+        <div class="who"><b>Human operator</b><span class="mono">typical response</span></div>
+        <div class="race-track"><i data-race-bar="human"></i></div>
+        <div class="race-time"><span data-race-time="human">~8.5</span> s</div>
+      </div>
+      <div class="race-foot mono"><span>Shutdown-valve decision · simulation</span><span><strong>≈240× faster</strong> · human-in-the-loop by design</span></div>
+    </div>
+
+    <div class="pipe" data-pipe>
+      <div class="pipe-line" aria-hidden="true"><i data-pipe-pulse></i></div>
+      <div class="pipe-node" data-reveal><span class="t mono">SCADA</span><h4>Telemetry in</h4><p>Modbus / OPC UA signals from field instruments and alarms.</p></div>
+      <div class="pipe-node" data-reveal><span class="t mono">&lt; 2 ms</span><h4>Protocol translation</h4><p>Local, on-premise translation — no cloud round-trip.</p></div>
+      <div class="pipe-node" data-reveal><span class="t mono">~ 33 ms</span><h4>Parallel inference</h4><p>Small reflex model triages: equipment, gas-release confidence, permit-to-work, urgency.</p></div>
+      <div class="pipe-node" data-reveal><span class="t mono">&lt; 35 ms</span><h4>Valve decision</h4><p>Deterministic rules page the control room, log, or escalate.</p></div>
+    </div>
+
+    <div class="systems">
+      <article class="sys" data-reveal>
+        <span class="mono">System 1 · Reflex</span>
+        <h3>Fast, small, on-site</h3>
+        <p>A small on-site model triages every field report and alarm in ~35 ms, then deterministic rules decide whether to page the control room, log, or escalate.</p>
+      </article>
+      <article class="sys" data-reveal>
+        <span class="mono">System 2 · Reasoning</span>
+        <h3>Grounded local LLM</h3>
+        <p>Only complex questions reach a local LLM grounded in site procedures — it returns a short step-by-step plan to the technician’s tablet and drafts compliance and incident reports.</p>
+      </article>
+      <div class="sys sys-wide" data-reveal>
+        <p><b>Offline by design. Advisory by design.</b> No cloud dependency for low-connectivity platforms, and people always make the final call.</p>
+        <a class="btn" href="https://www.linkedin.com/in/abdulaadil" target="_blank" rel="noopener" data-magnetic>Watch demos on LinkedIn <span class="arr">↗</span></a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,9 @@
+---
+interface Props { title: string; note?: string }
+const { title, note = 'Illustrative demo · sample data' } = Astro.props;
+---
+<div class="case-demo" data-cursor="Live">
+  <div class="demo-bar mono"><span class="dots"><i></i><i></i><i></i></span><span>{title}</span></div>
+  <div class="demo-body"><slot /></div>
+  <div class="demo-note mono">{note}</div>
+</div>

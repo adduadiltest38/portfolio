@@ -1,0 +1,64 @@
+---
+import { capabilities } from '../data/profile';
+
+// Minimal line-art glyph per capability (stroke = currentColor = accent)
+const viz: Record<string, string> = {
+  llm: `<g fill="none" stroke="currentColor" stroke-width="1.2">
+    <path d="M20 70 L90 30 L170 60 L250 25 M20 70 L90 110 L170 60 L250 105 M90 30 L90 110 M170 60 L250 25 L250 105"/>
+    </g><g fill="currentColor">
+    <circle cx="20" cy="70" r="5"/><circle cx="90" cy="30" r="5"/><circle cx="90" cy="110" r="5"/>
+    <circle cx="170" cy="60" r="7"/><circle cx="250" cy="25" r="5"/><circle cx="250" cy="105" r="5"/></g>`,
+  voice: Array.from({ length: 34 }, (_, i) => {
+    const h = 10 + Math.abs(Math.sin(i * 0.55) * Math.cos(i * 0.21)) * 110;
+    return `<rect class="vbar" x="${i * 8}" y="${70 - h / 2}" width="3.5" height="${h}" rx="1.75" fill="currentColor" opacity="${0.35 + (h / 120) * 0.65}"/>`;
+  }).join(''),
+  vision: `<g fill="none" stroke="currentColor" stroke-width="1.2">
+    <rect x="10" y="10" width="250" height="120" rx="6" stroke-opacity=".35"/>
+    <path d="M30 95 H120 V45 H200 M160 45 V95 H240" stroke-opacity=".6"/>
+    <circle cx="120" cy="95" r="12" stroke-opacity=".6"/><path d="M190 37 l12 8 -12 8z M214 37 l-12 8 12 8z" stroke-opacity=".6"/>
+    <rect x="100" y="75" width="40" height="40" stroke-dasharray="4 3"/><rect x="182" y="27" width="40" height="36" stroke-dasharray="4 3"/>
+    </g><text x="100" y="70" fill="currentColor" font-family="JetBrains Mono" font-size="9">PUMP 0.97</text>
+    <text x="182" y="22" fill="currentColor" font-family="JetBrains Mono" font-size="9">VALVE 0.94</text>`,
+  micro: `<g fill="none" stroke="currentColor" stroke-width="1.2">
+    <rect x="10" y="45" width="70" height="50" rx="8"/><rect x="190" y="10" width="70" height="44" rx="8"/><rect x="190" y="86" width="70" height="44" rx="8"/>
+    <path d="M80 70 H135 V32 H190 M135 70 V108 H190" stroke-dasharray="3 4"/></g>
+    <g fill="currentColor" font-family="JetBrains Mono" font-size="10"><text x="22" y="74">.NET</text><text x="200" y="36">FastAPI</text><text x="200" y="112">vLLM</text></g>`,
+  agentic: `<g fill="none" stroke="currentColor" stroke-width="1.2"><rect x="10" y="10" width="250" height="120" rx="8" stroke-opacity=".4"/></g>
+    <g fill="currentColor" font-family="JetBrains Mono" font-size="11">
+    <text x="26" y="40">&gt; claude</text><text x="26" y="62" opacity=".6">  ✓ skill: api-contract</text>
+    <text x="26" y="84" opacity=".6">  ✓ context: 38% of budget</text><text x="26" y="106" opacity=".6">  ✓ tests passing</text></g>`,
+  edge: `<g fill="none" stroke="currentColor" stroke-width="1.2">
+    <rect x="105" y="40" width="60" height="60" rx="6"/><rect x="118" y="53" width="34" height="34" rx="3" fill="currentColor" fill-opacity=".15"/>
+    <path d="M115 40 V28 M135 40 V28 M155 40 V28 M115 100 V112 M135 100 V112 M155 100 V112 M105 55 H93 M105 85 H93 M165 55 H177 M165 85 H177"/>
+    <path d="M60 50 a28 28 0 0 0 0 40 M45 38 a46 46 0 0 0 0 64 M210 50 a28 28 0 0 1 0 40 M225 38 a46 46 0 0 1 0 64" stroke-opacity=".6"/></g>`,
+};
+---
+<section class="caps" id="capabilities" aria-labelledby="caps-title">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow mono"><b>02</b> Capabilities</div>
+        <h2 class="h2" id="caps-title" data-split>What I <span class="serif">build</span></h2>
+      </div>
+      <p class="sec-sub" data-reveal>Six disciplines I work across every week — from the model to the microservice to the app in someone’s hand.</p>
+    </div>
+  </div>
+  <div class="caps-pin" data-caps>
+    <div class="caps-track" data-caps-track>
+      {capabilities.map((c, i) => (
+        <article class="cap" data-cap>
+          <div>
+            <div class="cap-top mono"><b>{String(i + 1).padStart(2, '0')}</b><span>/ {String(capabilities.length).padStart(2, '0')}</span></div>
+          </div>
+          <div class="cap-viz" aria-hidden="true"><svg viewBox="0 0 270 140" set:html={viz[c.id]} /></div>
+          <div>
+            <h3>{c.title}</h3>
+            <p>{c.blurb}</p>
+            <div class="tags">{c.tags.map((t) => <span class="tag">{t}</span>)}</div>
+          </div>
+        </article>
+      ))}
+    </div>
+    <div class="caps-progress" aria-hidden="true"><i data-caps-progress></i></div>
+  </div>
+</section>

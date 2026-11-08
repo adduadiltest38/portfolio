@@ -1,0 +1,56 @@
+---
+import DemoFrame from './DemoFrame.astro';
+// 5×5 likelihood × severity matrix, levels 1 (low) .. 4 (critical)
+const level = (l: number, s: number) => { const v = l * s; return v >= 15 ? 4 : v >= 9 ? 3 : v >= 4 ? 2 : 1; };
+const cells: { l: number; s: number; lvl: number }[] = [];
+for (let l = 5; l >= 1; l--) for (let s = 1; s <= 5; s++) cells.push({ l, s, lvl: level(l, s) });
+---
+<DemoFrame title="vail-aips · hazard register">
+  <div data-risk style="display:flex;flex-direction:column;flex:1;gap:16px">
+    <div class="mono" style="display:flex;justify-content:space-between;color:var(--muted)">
+      <span>HAZ-031 · Gas release at separator</span><span data-risk-state style="color:var(--accent)">Risk: high</span>
+    </div>
+    <div class="risk">
+      <span class="risk-axis mono">Likelihood</span>
+      <div class="risk-grid" data-risk-grid>
+        {cells.map((c) => <i data-l={c.lvl} data-cell={`${c.l}-${c.s}`}></i>)}
+      </div>
+      <span class="risk-x mono">Severity</span>
+    </div>
+    <div class="mono" style="display:flex;gap:10px;flex-wrap:wrap;color:var(--dim)">
+      <span data-mit>+ Gas detection</span><span data-mit>+ SDV interlock</span><span data-mit>+ Permit-to-work</span>
+    </div>
+  </div>
+</DemoFrame>
+
+<script>
+  import gsap from 'gsap';
+  const root = document.querySelector<HTMLElement>('[data-risk]');
+  if (root) {
+    const grid = root.querySelector<HTMLElement>('[data-risk-grid]')!;
+    const state = root.querySelector<HTMLElement>('[data-risk-state]')!;
+    const mits = root.querySelectorAll<HTMLElement>('[data-mit]');
+    const path = [
+      ['4-5', 'Risk: high'],
+      ['3-5', 'Risk: high'],
+      ['2-4', 'Risk: medium'],
+      ['1-4', 'Risk: low · ALARP'],
+    ];
+    const dot = document.createElement('b');
+    const move = (key: string) => grid.querySelector(`[data-cell="${key}"]`)?.appendChild(dot);
+    move(path[0][0]);
+    if (!document.documentElement.classList.contains('reduced')) {
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 1.5, paused: true });
+      tl.call(() => { move(path[0][0]); state.textContent = path[0][1]; mits.forEach((m) => (m.style.color = '')); });
+      path.slice(1).forEach(([key, label], i) => {
+        tl.to({}, { duration: 1.1 })
+          .call(() => { mits[i].style.color = 'var(--ink)'; })
+          .to(dot, { scale: 0, duration: 0.2 })
+          .call(() => { move(key); state.textContent = label; })
+          .to(dot, { scale: 1, duration: 0.45, ease: 'back.out(2)' });
+      });
+      tl.to({}, { duration: 1.8 });
+      new IntersectionObserver(([e]) => (e.isIntersecting ? tl.play() : tl.pause()), { threshold: 0.3 }).observe(root);
+    }
+  }
+</script>

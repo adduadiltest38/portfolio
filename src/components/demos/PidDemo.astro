@@ -1,0 +1,112 @@
+---
+import DemoFrame from './DemoFrame.astro';
+---
+<DemoFrame title="vail-plant · p&id → 3d">
+  <div data-pid style="display:flex;flex-direction:column;flex:1">
+    <div class="pid-stage">
+      <svg viewBox="0 0 240 200" role="img" aria-label="2D P&ID drawing with a vessel, pump, control valve and heat exchanger">
+        <g fill="none" stroke="#c9c5bc" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <rect data-draw x="22" y="30" width="46" height="108" rx="23" />
+          <path data-draw d="M45 138 V166 H110" />
+          <circle data-draw cx="125" cy="166" r="15" />
+          <path data-draw d="M118 173 L125 157 L132 173" />
+          <path data-draw d="M125 151 V70 H148" />
+          <path data-draw d="M148 62 L166 78 V62 L148 78 Z" />
+          <path data-draw d="M157 70 V54 M150 54 H164" />
+          <path data-draw d="M166 70 H215 V92" />
+          <circle data-draw cx="215" cy="110" r="18" />
+          <path data-draw d="M201 110 l5 -7 5 14 5 -14 5 14 5 -7" />
+          <circle data-draw cx="98" cy="38" r="12" />
+          <path data-draw d="M86 40 H68" stroke-dasharray="3 3" />
+        </g>
+        <g font-family="JetBrains Mono" font-size="8" fill="#8e8a82">
+          <text x="92" y="41" font-size="7" fill="#c9c5bc">PT</text>
+          <text x="24" y="152">V-101</text><text x="112" y="194">P-204</text><text x="146" y="92">FV-201</text><text x="200" y="140">E-301</text>
+        </g>
+        <g fill="none" stroke="#ff5a1f" stroke-width="1" stroke-dasharray="3 2">
+          <rect data-box x="15" y="24" width="60" height="120" />
+          <rect data-box x="105" y="146" width="40" height="40" />
+          <rect data-box x="143" y="48" width="28" height="36" />
+          <rect data-box x="192" y="87" width="46" height="46" />
+        </g>
+        <g font-family="JetBrains Mono" font-size="7" fill="#ff5a1f">
+          <text data-box x="15" y="20">vessel .98</text><text data-box x="105" y="143">pump .97</text>
+          <text data-box x="143" y="45">valve .94</text><text data-box x="192" y="84">hx .95</text>
+        </g>
+      </svg>
+
+      <div class="pid-arrow mono" aria-hidden="true">
+        <svg width="44" height="16" viewBox="0 0 44 16"><path d="M0 8 H40 M33 2 L40 8 L33 14" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+        <span>vision<br />+ python</span>
+      </div>
+
+      <svg viewBox="0 0 240 200" role="img" aria-label="Generated 3D model of the same equipment">
+        <defs>
+          <linearGradient id="cyl" x1="0" x2="1">
+            <stop offset="0" stop-color="#3a3a40" /><stop offset=".45" stop-color="#d9d5cc" /><stop offset="1" stop-color="#2a2a2e" />
+          </linearGradient>
+          <linearGradient id="cylo" x1="0" x2="1">
+            <stop offset="0" stop-color="#7a2a0c" /><stop offset=".45" stop-color="#ff8a3d" /><stop offset="1" stop-color="#5a1e08" />
+          </linearGradient>
+          <linearGradient id="pipe" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#e9e5dc" /><stop offset="1" stop-color="#4a4a50" />
+          </linearGradient>
+        </defs>
+        <g data-iso>
+          <path d="M60 158 L118 178" stroke="url(#pipe)" stroke-width="7" stroke-linecap="round" />
+        </g>
+        <g data-iso>
+          <path d="M28 52 V150 A24 10 0 0 0 76 150 V52" fill="url(#cyl)" />
+          <ellipse cx="52" cy="52" rx="24" ry="10" fill="#e9e5dc" />
+          <ellipse cx="52" cy="52" rx="24" ry="10" fill="none" stroke="#0a0a0b" stroke-opacity=".3" />
+        </g>
+        <g data-iso>
+          <path d="M126 176 V82 L160 70" stroke="url(#pipe)" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+        <g data-iso>
+          <path d="M112 168 V184 A16 7 0 0 0 144 184 V168" fill="url(#cylo)" />
+          <ellipse cx="128" cy="168" rx="16" ry="7" fill="#ffb07a" />
+        </g>
+        <g data-iso>
+          <path d="M160 70 L202 56 V90" stroke="url(#pipe)" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M168 60 L182 74 L182 58 L168 72 Z" fill="#ff5a1f" transform="translate(-2 -2)" />
+        </g>
+        <g data-iso>
+          <path d="M180 96 L226 112 V138 L180 122 Z" fill="url(#cyl)" />
+          <ellipse cx="180" cy="109" rx="7" ry="13" fill="#e9e5dc" />
+          <ellipse cx="226" cy="125" rx="7" ry="13" fill="#3a3a40" />
+        </g>
+        <g data-iso font-family="JetBrains Mono" font-size="8" fill="#8e8a82">
+          <text x="30" y="34">V-101</text><text x="150" y="196">P-204</text><text x="190" y="152">E-301</text>
+        </g>
+      </svg>
+    </div>
+    <div class="pid-cap mono"><span>2D drawing · input</span><span>3D model · output</span></div>
+  </div>
+</DemoFrame>
+
+<script>
+  import gsap from 'gsap';
+  const root = document.querySelector<HTMLElement>('[data-pid]');
+  if (root && !document.documentElement.classList.contains('reduced')) {
+    const draws = Array.from(root.querySelectorAll<SVGGeometryElement>('[data-draw]'));
+    const boxes = root.querySelectorAll('[data-box]');
+    const iso = root.querySelectorAll('[data-iso]');
+    draws.forEach((d) => {
+      const len = Math.ceil(d.getTotalLength());
+      if (!d.getAttribute('stroke-dasharray')) d.style.strokeDasharray = `${len}`;
+      d.dataset.len = String(len);
+    });
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 1, paused: true });
+    tl.set(draws, { strokeDashoffset: (_i: number, el: Element) => (el as SVGElement).dataset.len ?? 0 })
+      .set(boxes, { autoAlpha: 0 })
+      .set(iso, { autoAlpha: 0, y: 14, transformOrigin: '50% 100%' })
+      .to(draws, { strokeDashoffset: 0, duration: 0.9, stagger: 0.12, ease: 'power2.inOut' })
+      .to(boxes, { autoAlpha: 1, duration: 0.2, stagger: { each: 0.12, repeat: 1, yoyo: true } }, '+=0.2')
+      .to(boxes, { autoAlpha: 1, duration: 0.2 })
+      .to(iso, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.14, ease: 'back.out(1.6)' }, '+=0.2')
+      .to({}, { duration: 2.5 })
+      .to([boxes, iso], { autoAlpha: 0, duration: 0.5 });
+    new IntersectionObserver(([e]) => (e.isIntersecting ? tl.play() : tl.pause()), { threshold: 0.3 }).observe(root);
+  }
+</script>

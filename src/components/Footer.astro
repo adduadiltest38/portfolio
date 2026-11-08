@@ -1,0 +1,21 @@
+---
+import { person } from '../data/profile';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top mono">
+      <span>Abu Dhabi · <time data-clock>--:--</time> GST</span>
+      <nav aria-label="Footer">
+        <a href={`mailto:${person.email}`}>Email</a>
+        <a href={person.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+        <a href="#top">Back to top ↑</a>
+      </nav>
+    </div>
+    <div class="footer-name" aria-hidden="true">Abdula Adil</div>
+    <div class="footer-bottom mono">
+      <span>© {year} {person.name}</span>
+      <span>Astro · React · Three.js · GSAP · Remotion — built with Claude Code</span>
+    </div>
+  </div>
+</footer>

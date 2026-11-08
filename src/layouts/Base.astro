@@ -1,0 +1,128 @@
+---
+import '../styles/global.css';
+import { site, person, education, capabilities, experience } from '../data/profile';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title = site.title, description = site.description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(site.ogImage, Astro.site).href;
+
+const knowsAbout = [
+  'Large Language Models', 'LLM integration', 'Retrieval-Augmented Generation', 'NL to SQL',
+  'Voice AI', 'Speech-to-text', 'Text-to-speech', 'Computer Vision', 'P&ID digitization',
+  'Edge AI', 'Industrial AI', 'SCADA', 'Agentic AI engineering', 'Claude Code',
+  ...capabilities.flatMap((c) => c.tags),
+  'ASP.NET Core', 'C#', 'Python', 'FastAPI', 'React Native', 'Angular', 'React', 'TypeScript', 'SQL Server', 'Docker',
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${site.url}/#website`,
+      url: `${site.url}/`,
+      name: `${person.name} — Portfolio`,
+      inLanguage: 'en',
+      publisher: { '@id': `${site.url}/#person` },
+    },
+    {
+      '@type': 'ProfilePage',
+      '@id': `${site.url}/#profile`,
+      url: `${site.url}/`,
+      name: title,
+      description,
+      isPartOf: { '@id': `${site.url}/#website` },
+      mainEntity: { '@id': `${site.url}/#person` },
+      dateModified: new Date().toISOString().slice(0, 10),
+    },
+    {
+      '@type': 'Person',
+      '@id': `${site.url}/#person`,
+      name: person.name,
+      givenName: person.first,
+      familyName: person.last,
+      url: `${site.url}/`,
+      image: ogImage,
+      jobTitle: 'AI Engineer',
+      description,
+      email: `mailto:${person.email}`,
+      address: { '@type': 'PostalAddress', addressLocality: 'Abu Dhabi', addressCountry: 'AE' },
+      worksFor: { '@type': 'Organization', name: experience[0].org },
+      hasOccupation: {
+        '@type': 'Occupation',
+        name: 'AI Engineer',
+        occupationLocation: { '@type': 'City', name: 'Abu Dhabi' },
+        skills: knowsAbout.slice(0, 20).join(', '),
+      },
+      alumniOf: { '@type': 'CollegeOrUniversity', name: 'P.A. College of Engineering, Mangalore (VTU)' },
+      hasCredential: [
+        { '@type': 'EducationalOccupationalCredential', credentialCategory: 'degree', name: education.degree },
+        ...education.certs.map((c) => ({ '@type': 'EducationalOccupationalCredential', credentialCategory: 'certificate', name: c })),
+      ],
+      award: ['Employee of the Month ×3 (Sep 2025, Feb 2026, May 2026) — Velosi Asset Integrity'],
+      knowsAbout: [...new Set(knowsAbout)],
+      knowsLanguage: ['English', 'Malayalam'],
+      sameAs: [person.linkedin],
+    },
+  ],
+};
+---
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="author" content={person.name} />
+    <meta name="theme-color" content="#0a0a0b" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content={`${person.name} — Portfolio`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Abdula Adil — AI Engineer. LLM · Voice AI · Computer Vision. Abu Dhabi, UAE." />
+    <meta property="og:locale" content="en_US" />
+    <meta property="profile:first_name" content={person.first} />
+    <meta property="profile:last_name" content={person.last} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <script is:inline>
+      document.documentElement.classList.replace('no-js', 'js');
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reduced');
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <slot />
+    <div class="grain" aria-hidden="true"></div>
+  </body>
+</html>

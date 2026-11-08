@@ -1,0 +1,26 @@
+---
+import { person, site } from '../data/profile';
+---
+<section class="contact" id="contact" aria-labelledby="contact-title">
+  <div class="container" style="position:relative">
+    <div class="eyebrow mono" style="display:flex;justify-content:center"><b>07</b> Contact</div>
+    <h2 class="contact-title" id="contact-title" data-split>Let’s build <br /> AI that <span class="serif">ships.</span></h2>
+    <p class="contact-sub" data-reveal>
+      Open to full-time AI / full-stack engineering roles and select freelance builds — LLM integration, voice and vision AI,
+      FastAPI microservices, or setting up Claude Code workflows for your team.
+    </p>
+    <div class="email-wrap" data-reveal>
+      <a class="email-big" href={`mailto:${person.email}`} data-copy-email={person.email} data-cursor="Email">{person.email} <span class="accent">↗</span></a>
+      <span class="copied mono" data-copied role="status">Copied to clipboard</span>
+    </div>
+    <div class="contact-cta" data-reveal>
+      <a class="btn primary" href={`mailto:${person.email}?subject=Opportunity%20for%20Abdula`} data-magnetic>Email me <span class="arr">→</span></a>
+      <a class="btn" href={person.linkedin} target="_blank" rel="noopener" data-magnetic>LinkedIn <span class="arr">↗</span></a>
+      <a class="btn" href={site.cv} download data-magnetic>Download CV <span class="arr">↓</span></a>
+    </div>
+    <ul class="facts" data-reveal>
+      <li>{person.location}</li>
+      {person.facts.map((f) => <li>{f}</li>)}
+    </ul>
+  </div>
+</section>

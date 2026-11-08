@@ -1,0 +1,32 @@
+---
+import { stats, person } from '../data/profile';
+---
+<section class="section" id="about" aria-labelledby="about-title">
+  <div class="container">
+    <div class="eyebrow mono"><b>01</b> About</div>
+    <h2 class="sr-only" id="about-title">About Abdula Adil</h2>
+    <p class="manifesto" data-scrub-words>
+      I’m an AI engineer in Abu Dhabi building <span class="serif">LLM-powered</span> systems for the industrial and asset-integrity sector —
+      voice assistants field engineers can talk to, vision models that read engineering drawings, and enterprise AI that answers from live data.
+      I own it end-to-end: architecture, <span class="serif">FastAPI</span> microservices, .NET backends, and the web and mobile apps people actually use.
+    </p>
+
+    <div class="about-foot">
+      <p data-reveal>
+        Sole engineer building AI capabilities for the VAIL ERP platform. Trusted with international client delivery — an onsite program for
+        Sonatrach engineering teams in Algeria. Deep daily practice in agentic engineering with Claude Code. Languages: {person.languages.join(', ')}.
+      </p>
+      <div class="stats">
+        {stats.map((s) => (
+          <div class="stat" data-reveal>
+            <div class="stat-num">
+              {s.prefix && <span class="pre">{s.prefix}</span>}<span data-count={s.value}>{s.value}</span>{s.suffix && <span class="suf">{s.suffix}</span>}
+            </div>
+            <div class="stat-label">{s.label}</div>
+            <div class="stat-note mono">{s.note}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

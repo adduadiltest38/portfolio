@@ -1,0 +1,25 @@
+---
+import { experience } from '../data/profile';
+---
+<section class="section" id="experience" aria-labelledby="exp-title">
+  <div class="container exp-grid">
+    <div class="exp-sticky">
+      <div class="eyebrow mono"><b>05</b> Experience</div>
+      <h2 class="h2" id="exp-title" data-split>Where I’ve <span class="serif">shipped</span></h2>
+      <p data-reveal>From penetration testing to SEO to owning AI for an enterprise ERP — every role taught me something I still use.</p>
+    </div>
+    <div class="timeline" data-timeline>
+      <div class="tl-line" aria-hidden="true"><i data-tl-progress></i></div>
+      {experience.map((job) => (
+        <article class={`tl-item${job.current ? ' current' : ''}`} data-reveal>
+          <div class="tl-when mono">
+            <span>{job.when}</span><span>{job.where}</span>{job.current && <span class="now">● Current</span>}
+          </div>
+          <h3>{job.role}</h3>
+          <div class="tl-org">{job.org}</div>
+          <ul>{job.points.map((pt) => <li set:html={pt} />)}</ul>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

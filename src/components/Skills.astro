@@ -1,0 +1,41 @@
+---
+import { skills, education, person } from '../data/profile';
+---
+<section class="section" id="skills" aria-labelledby="skills-title" style="padding-top:0">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow mono"><b>06</b> Toolkit</div>
+        <h2 class="h2" id="skills-title" data-split>The <span class="serif">stack</span></h2>
+      </div>
+      <p class="sec-sub" data-reveal>Comfortable across the whole path a request takes — model, service, database, API, and the screen.</p>
+    </div>
+    <div class="skills">
+      {skills.map((g, i) => (
+        <div class="skill-row" data-reveal>
+          <span class="n mono">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{g.group}</h3>
+          <div class="tags">{g.items.map((t) => <span class="tag">{t}</span>)}</div>
+        </div>
+      ))}
+    </div>
+
+    <div class="edu">
+      <article class="edu-card" data-reveal>
+        <span class="mono">Education · {education.year}</span>
+        <h3>{education.degree}</h3>
+        <p>{education.school}</p>
+        <p>{education.minors}</p>
+        <p>{education.recognition}</p>
+      </article>
+      <article class="edu-card" data-reveal>
+        <span class="mono">Certifications</span>
+        <ul>{education.certs.map((c) => <li>{c}</li>)}</ul>
+      </article>
+      <article class="edu-card" data-reveal>
+        <span class="mono">Strengths</span>
+        <ul>{person.strengths.map((s) => <li>{s}</li>)}</ul>
+      </article>
+    </div>
+  </div>
+</section>
