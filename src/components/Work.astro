@@ -27,6 +27,7 @@ const demos = { voice: VoiceDemo, pid: PidDemo, sql: SqlDemo, risk: RiskDemo } a
               <p class="case-lede">{p.lede}</p>
               <ul>{p.bullets.map((b) => <li set:html={b} />)}</ul>
               <div class="tags">{p.tags.map((t) => <span class="tag">{t}</span>)}</div>
+              <a class="case-more mono" href={`/projects/${p.id}/`}>Read the {p.title} case study →</a>
             </div>
             <Demo />
           </article>

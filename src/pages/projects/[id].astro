@@ -1,0 +1,47 @@
+---
+import Page from '../../layouts/Page.astro';
+import { person, site, projects } from '../../data/profile';
+
+export function getStaticPaths() {
+  return projects.map((p) => ({ params: { id: p.id }, props: { project: p } }));
+}
+const { project: p } = Astro.props;
+const i = projects.findIndex((x) => x.id === p.id);
+const next = projects[(i + 1) % projects.length];
+
+const strip = (html: string) => html.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&');
+const title = `${strip(p.title)} — ${p.kicker.split('·').pop()!.trim()} | ${person.name}`;
+const description = `${strip(p.lede)} ${strip(p.bullets[0])}`.slice(0, 158).replace(/\s+\S*$/, '') + '…';
+const url = `${site.url}/projects/${p.id}/`;
+const work = {
+  '@type': 'CreativeWork',
+  '@id': `${url}#work`,
+  name: strip(p.title),
+  headline: `${strip(p.title)} — ${strip(p.lede)}`,
+  description,
+  url,
+  author: { '@id': `${site.url}/#person` },
+  creator: { '@id': `${site.url}/#person` },
+  keywords: p.tags.join(', '),
+  isPartOf: { '@id': `${site.url}/#website` },
+};
+---
+<Page title={title} description={description} crumbs={[{ name: 'Projects', path: '/projects/' }, { name: strip(p.title) }]} schema={[work]} ogType="article">
+  <article>
+    <p class="mono accent">{p.index} · {p.kicker}</p>
+    <h1>{p.title}</h1>
+    <p class="lede">{p.lede}</p>
+    <p class="meta mono">Built by <a href="/about/">{person.name}</a> · {person.role}, {person.location}</p>
+
+    <h2>What was built</h2>
+    <ul>{p.bullets.map((b) => <li set:html={b} />)}</ul>
+
+    <h2>Stack</h2>
+    <ul class="tags">{p.tags.map((t) => <li class="tag">{t}</li>)}</ul>
+
+    <div class="pg-ctas">
+      <a class="btn primary" href={`/#work-${p.id}`}>Try the interactive demo <span class="arr">→</span></a>
+      <a class="btn" href={`/projects/${next.id}/`}>Next: {next.title} <span class="arr">→</span></a>
+    </div>
+  </article>
+</Page>

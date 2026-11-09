@@ -5,9 +5,19 @@ import { site, person, education, capabilities, experience } from '../data/profi
 interface Props {
   title?: string;
   description?: string;
+  /** Extra JSON-LD nodes for this page (breadcrumbs, articles…), merged into the shared @graph. */
+  schema?: Record<string, unknown>[];
+  /** og:type — 'profile' for the home page, 'article' / 'website' elsewhere. */
+  ogType?: string;
+  noindex?: boolean;
 }
-const { title = site.title, description = site.description } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const { title = site.title, description = site.description, schema = [], ogType = 'profile', noindex = false } = Astro.props;
+// Canonical always ends in "/" so it matches the URLs in the sitemap (Astro's default directory build format).
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonical = new URL(path, Astro.site).href;
+const isHome = path === '/';
+const fonts =
+  'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap';
 const ogImage = new URL(site.ogImage, Astro.site).href;
 
 const knowsAbout = [
@@ -30,27 +40,41 @@ const jsonLd = {
       publisher: { '@id': `${site.url}/#person` },
     },
     {
-      '@type': 'ProfilePage',
-      '@id': `${site.url}/#profile`,
-      url: `${site.url}/`,
+      '@type': isHome ? 'ProfilePage' : 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
       name: title,
       description,
+      inLanguage: 'en',
       isPartOf: { '@id': `${site.url}/#website` },
-      mainEntity: { '@id': `${site.url}/#person` },
+      ...(isHome ? { mainEntity: { '@id': `${site.url}/#person` } } : { about: { '@id': `${site.url}/#person` } }),
+      primaryImageOfPage: { '@id': `${site.url}/#portrait` },
       dateModified: new Date().toISOString().slice(0, 10),
+    },
+    {
+      '@type': 'ImageObject',
+      '@id': `${site.url}/#portrait`,
+      url: ogImage,
+      contentUrl: ogImage,
+      width: 1200,
+      height: 630,
+      caption: `${person.name} — AI Engineer, Abu Dhabi`,
     },
     {
       '@type': 'Person',
       '@id': `${site.url}/#person`,
       name: person.name,
+      alternateName: person.alternateNames,
       givenName: person.first,
       familyName: person.last,
       url: `${site.url}/`,
-      image: ogImage,
+      mainEntityOfPage: { '@id': `${site.url}/#webpage` },
+      image: { '@id': `${site.url}/#portrait` },
       jobTitle: 'AI Engineer',
       description,
       email: `mailto:${person.email}`,
       address: { '@type': 'PostalAddress', addressLocality: 'Abu Dhabi', addressCountry: 'AE' },
+      homeLocation: { '@type': 'City', name: 'Abu Dhabi', containedInPlace: { '@type': 'Country', name: 'United Arab Emirates' } },
       worksFor: { '@type': 'Organization', name: experience[0].org },
       hasOccupation: {
         '@type': 'Occupation',
@@ -66,8 +90,9 @@ const jsonLd = {
       award: ['Employee of the Month ×3 (Sep 2025, Feb 2026, May 2026) — Velosi Asset Integrity'],
       knowsAbout: [...new Set(knowsAbout)],
       knowsLanguage: ['English', 'Malayalam'],
-      sameAs: [person.linkedin],
+      sameAs: [...new Set([person.linkedin, ...person.profiles])],
     },
+    ...schema,
   ],
 };
 ---
@@ -79,13 +104,15 @@ const jsonLd = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+    {site.verification.google && <meta name="google-site-verification" content={site.verification.google} />}
+    {site.verification.bing && <meta name="msvalidate.01" content={site.verification.bing} />}
     <meta name="author" content={person.name} />
     <meta name="theme-color" content="#0a0a0b" />
     <meta name="color-scheme" content="dark" />
     <meta name="format-detection" content="telephone=no" />
 
-    <meta property="og:type" content="profile" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={`${person.name} — Portfolio`} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -95,8 +122,8 @@ const jsonLd = {
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Abdula Adil — AI Engineer. LLM · Voice AI · Computer Vision. Abu Dhabi, UAE." />
     <meta property="og:locale" content="en_US" />
-    <meta property="profile:first_name" content={person.first} />
-    <meta property="profile:last_name" content={person.last} />
+    {ogType === 'profile' && <meta property="profile:first_name" content={person.first} />}
+    {ogType === 'profile' && <meta property="profile:last_name" content={person.last} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -105,14 +132,15 @@ const jsonLd = {
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+    <link rel="me" href={person.linkedin} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
-    />
+    <!-- Fonts load without blocking first paint (better LCP / Core Web Vitals); system fallbacks render meanwhile. -->
+    <link rel="preload" as="style" href={fonts} />
+    <link rel="stylesheet" href={fonts} media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href={fonts} /></noscript>
 
     <script is:inline>
       document.documentElement.classList.replace('no-js', 'js');

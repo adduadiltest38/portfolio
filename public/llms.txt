@@ -1,0 +1,25 @@
+# Abdula Adil
+
+> Abdula Adil is an AI Engineer and full-stack developer in Abu Dhabi, UAE, working at Velosi Asset Integrity Ltd. Builds LLM-powered enterprise systems for the industrial and asset-integrity sector: voice AI (Whisper speech-to-text, Kokoro text-to-speech), computer vision that converts P&ID drawings into 3D models, NL-to-SQL over SQL Server, and Python FastAPI AI microservices integrated with ASP.NET Core, Angular and React Native apps.
+
+Also searched as: Abdulla Adil, Abdullah Adil, Abdul Adil.
+
+## Pages
+
+- [Portfolio home](https://abdula-adil.vercel.app/): overview, interactive demos, contact
+- [About Abdula Adil](https://abdula-adil.vercel.app/about/): bio, specialties, background
+- [Resume](https://abdula-adil.vercel.app/resume/): experience, skills, education, certifications
+- [Projects](https://abdula-adil.vercel.app/projects/): case studies
+
+## Projects
+
+- [VAIL-Plant](https://abdula-adil.vercel.app/projects/plant/): enterprise AI assistant with real-time voice chat and a React Native mobile app
+- [P&ID → 3D](https://abdula-adil.vercel.app/projects/pid/): computer-vision pipeline turning piping & instrumentation diagrams into 3D models
+- [VAIL ERP — AI](https://abdula-adil.vercel.app/projects/erp/): natural-language querying of live ERP data (Ollama, Semantic Kernel, FastAPI)
+- [VAIL-AIPS](https://abdula-adil.vercel.app/projects/aips/): process-safety software (hazard management, compliance, risk tracking)
+
+## Contact
+
+- Email: adduadil38@gmail.com
+- LinkedIn: https://www.linkedin.com/in/abdulaadil
+- CV (PDF): https://abdula-adil.vercel.app/Abdula_Adil_CV.pdf

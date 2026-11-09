@@ -1,0 +1,24 @@
+---
+import Page from '../../layouts/Page.astro';
+import { person, site, projects } from '../../data/profile';
+
+const title = `Projects by ${person.name} — Enterprise AI, Voice AI & Computer Vision`;
+const description = `Case studies by ${person.name}, AI Engineer in Abu Dhabi: LLM voice assistants, P&ID-to-3D computer vision and NL-to-SQL for industrial ERP.`;
+const list = {
+  '@type': 'ItemList',
+  '@id': `${site.url}/projects/#list`,
+  itemListElement: projects.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site.url}/projects/${p.id}/`, name: p.title })),
+};
+---
+<Page title={title} description={description} crumbs={[{ name: 'Projects' }]} schema={[list]}>
+  <p class="mono accent">Selected work</p>
+  <h1>Projects by <span class="serif">{person.name}</span></h1>
+  <p class="lede">Enterprise AI and full-stack systems designed and built at Velosi Asset Integrity, Abu Dhabi.</p>
+  <h2>Case studies</h2>
+  <ul class="pg-cards">
+    {projects.map((p) => (
+      <li><a href={`/projects/${p.id}/`}><span class="mono accent">{p.index} · {p.kicker}</span><strong>{p.title}</strong><span>{p.lede}</span></a></li>
+    ))}
+  </ul>
+  <div class="pg-ctas"><a class="btn" href="/#work">See the interactive demos <span class="arr">→</span></a></div>
+</Page>

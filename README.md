@@ -23,10 +23,26 @@ The downloadable CV is `public/Abdula_Adil_CV.pdf` — replace the file to updat
 ## SEO
 
 - Fully pre-rendered HTML — every word is in the markup, readable with JS disabled.
-- Unique title/description, canonical, Open Graph + Twitter card (`public/og-image.png`, 1200×630).
-- JSON-LD `@graph`: `WebSite`, `ProfilePage`, `Person` (job title, employer, location, skills, credentials, LinkedIn).
-- `sitemap-index.xml` (auto via `@astrojs/sitemap`), `robots.txt`, web manifest, icons.
+- 8 indexable URLs, each with the name in `<title>` and `h1`: `/`, `/about/`, `/resume/`, `/projects/`, `/projects/{plant,pid,erp,aips}/`.
+  Sub-pages use `src/layouts/Page.astro` (no WebGL/preloader — fast, text-first) and are linked from the home page footer and Work cards.
+- Unique title/description (≤160 chars), trailing-slash canonical, Open Graph + Twitter card (`public/og-image.png`, 1200×630).
+- JSON-LD `@graph`: `WebSite`, `ProfilePage`/`WebPage`, `Person` (with `alternateName` spellings and `sameAs` profiles),
+  `BreadcrumbList` on sub-pages, `CreativeWork` per project.
+- Search-console verification tags from `site.verification` in `src/data/profile.ts`.
+- `sitemap-index.xml` with `lastmod`, `robots.txt`, `llms.txt` (for AI search), web manifest, icons.
+- Non-render-blocking web fonts; `vercel.json` forces trailing slashes so each page has one URL.
 - Semantic landmarks, one `h1`, ordered headings, skip link, `prefers-reduced-motion` support.
+
+### Getting the site to rank for the name (off-site — code alone can't do this)
+
+1. **Google Search Console** → add property `https://abdula-adil.vercel.app/` → HTML tag → paste the token into
+   `site.verification.google` → deploy → Verify → *Sitemaps* → submit `sitemap-index.xml` → *URL inspection* → *Request indexing* for `/`, `/about/`, `/resume/`.
+2. **Bing Webmaster Tools** → import from Search Console (also feeds DuckDuckGo, Yahoo, ChatGPT search).
+3. **Link to the site from every profile you own** — LinkedIn (Contact info → Website, and Featured), GitHub profile + README, any
+   dev.to / Medium / Kaggle / Hugging Face account — then add those URLs to `person.profiles` so they appear in `sameAs`.
+4. **Custom domain** (e.g. `abdulaadil.com` / `.dev`) — an exact-name domain is the single biggest on-site boost for a name query.
+   Change `site` in `astro.config.mjs`, `site.url` in `profile.ts`, `robots.txt` and `llms.txt`, and 301 the vercel.app host to it.
+5. **A real headshot** at a stable URL (e.g. `public/abdula-adil.jpg`) used as the `Person` image helps Knowledge Panel / image results.
 
 ## Develop
 

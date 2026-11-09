@@ -1,0 +1,52 @@
+---
+import Page from '../layouts/Page.astro';
+import { person, site, summary, education, experience, projects, capabilities } from '../data/profile';
+
+const title = `About ${person.name} — AI Engineer & Full-Stack Developer in Abu Dhabi, UAE`;
+const description = `${person.name} is an AI Engineer at Velosi Asset Integrity in Abu Dhabi, UAE, building LLM, voice AI and computer-vision systems end-to-end.`;
+---
+<Page title={title} description={description} crumbs={[{ name: 'About' }]} ogType="profile">
+  <article>
+    <p class="mono accent">{person.role} · {person.location}</p>
+    <h1>About {person.name}</h1>
+    <p class="lede">
+      {person.name} is an AI Engineer and full-stack developer based in Abu Dhabi, United Arab Emirates, building LLM-powered
+      enterprise systems for the industrial and asset-integrity sector at {experience[0].org}.
+    </p>
+
+    <h2>What {person.first} does</h2>
+    <p>{summary}</p>
+    <p>
+      {person.first}’s work spans the whole stack: Python FastAPI microservices for LLM inference and retrieval, ASP.NET Core backends built on
+      Clean Architecture with CQRS, and the Angular and React Native apps that field engineers use every day. {person.first} also led a three-day onsite training program for Sonatrach engineering teams in Algeria.
+    </p>
+
+    <h2>Specialties</h2>
+    <ul>
+      {capabilities.map((c) => <li><b>{c.title}</b> — {c.blurb}</li>)}
+    </ul>
+
+    <h2>Selected projects</h2>
+    <ul class="pg-cards">
+      {projects.map((p) => (
+        <li><a href={`/projects/${p.id}/`}><span class="mono accent">{p.index} · {p.kicker}</span><strong>{p.title}</strong><span>{p.lede}</span></a></li>
+      ))}
+    </ul>
+
+    <h2>Background</h2>
+    <dl>
+      <dt>Current role</dt><dd>{experience[0].role}, {experience[0].org} ({experience[0].when})</dd>
+      <dt>Location</dt><dd>{person.location} · {person.facts.join(' · ')}</dd>
+      <dt>Education</dt><dd>{education.degree} — {education.school}, {education.year}. {education.recognition}.</dd>
+      <dt>Languages</dt><dd>{person.languages.join(', ')}</dd>
+      <dt>Recognition</dt><dd>Employee of the Month ×3 — Sep 2025, Feb 2026, May 2026</dd>
+    </dl>
+
+    <h2>Contact {person.first}</h2>
+    <p>Email <a class="accent" href={`mailto:${person.email}`}>{person.email}</a> or connect on <a class="accent" href={person.linkedin} rel="me noopener" target="_blank">LinkedIn</a>.</p>
+    <div class="pg-ctas">
+      <a class="btn primary" href="/resume/">Read the resume <span class="arr">→</span></a>
+      <a class="btn" href={site.cv} download>Download CV <span class="arr">↓</span></a>
+    </div>
+  </article>
+</Page>

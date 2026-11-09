@@ -5,9 +5,16 @@ export const site = {
   url: 'https://abdula-adil.vercel.app',
   title: 'Abdula Adil — AI Engineer in Abu Dhabi | LLM · Voice AI · Computer Vision',
   description:
-    'Abdula Adil is an AI Engineer in Abu Dhabi, UAE building LLM-powered enterprise systems: voice AI (Whisper + Kokoro), computer vision that turns P&ID drawings into 3D models, Python FastAPI AI microservices and full-stack .NET, Angular and React Native apps.',
+    'Abdula Adil — AI Engineer in Abu Dhabi, UAE. Builds LLM systems, voice AI, P&ID-to-3D computer vision and full-stack .NET, Python & React Native apps.',
   ogImage: '/og-image.png',
   cv: '/Abdula_Adil_CV.pdf',
+  // Search-engine ownership tokens. Paste only the `content` value of the meta tag each console gives you.
+  // Google: search.google.com/search-console → Add property → URL prefix → "HTML tag".
+  // Bing:   bing.com/webmasters → Add site → "HTML Meta Tag" (or import straight from Google Search Console).
+  verification: {
+    google: '',
+    bing: '',
+  },
 };
 
 export const person = {
@@ -22,6 +29,13 @@ export const person = {
   email: 'adduadil38@gmail.com',
   linkedin: 'https://www.linkedin.com/in/abdulaadil',
   linkedinLabel: 'linkedin.com/in/abdulaadil',
+  // Spellings people may type. Fed to JSON-LD `alternateName` so search engines tie them to this person.
+  alternateNames: ['Abdulla Adil', 'Abdullah Adil', 'Abdul Adil', 'Adil Abdula'],
+  // Every public profile that is yours (GitHub, Medium, dev.to, X, Kaggle, Hugging Face...).
+  // These become JSON-LD `sameAs` — the strongest signal for tying your name to this site. LinkedIn is required.
+  profiles: [
+    'https://www.linkedin.com/in/abdulaadil',
+  ],
   facts: [
     'UAE Employment Visa',
     '30-day notice',

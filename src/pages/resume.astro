@@ -1,0 +1,46 @@
+---
+import Page from '../layouts/Page.astro';
+import { person, site, summary, education, experience, skills } from '../data/profile';
+
+const title = `${person.name} — Resume / CV | AI Engineer, Abu Dhabi`;
+const description = `Resume of ${person.name}, AI Engineer in Abu Dhabi: LLM (Ollama, Semantic Kernel, vLLM), voice AI, computer vision, FastAPI, ASP.NET Core, React Native.`;
+---
+<Page title={title} description={description} crumbs={[{ name: 'Resume' }]}>
+  <article>
+    <p class="mono accent">Resume · Updated {new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</p>
+    <h1>{person.name} <span class="serif">resume</span></h1>
+    <p class="lede">{person.role} — {person.specialties.join(' · ')}. {person.stack}. {person.location}.</p>
+    <p class="meta mono">
+      <a href={`mailto:${person.email}`}>{person.email}</a> · <a href={person.linkedin} rel="me noopener" target="_blank">{person.linkedinLabel}</a>
+    </p>
+    <div class="pg-ctas"><a class="btn primary" href={site.cv} download>Download PDF <span class="arr">↓</span></a></div>
+
+    <h2>Summary</h2>
+    <p>{summary}</p>
+
+    <h2>Experience</h2>
+    {experience.map((e) => (
+      <section>
+        <h3>{e.role} — {e.org}</h3>
+        <p class="meta mono">{e.when} · {e.where}</p>
+        <ul>{e.points.map((pt) => <li set:html={pt} />)}</ul>
+      </section>
+    ))}
+
+    <h2>Skills</h2>
+    <dl>
+      {skills.map((s) => (<><dt>{s.group}</dt><dd>{s.items.join(', ')}</dd></>))}
+    </dl>
+
+    <h2>Education</h2>
+    <h3>{education.degree}</h3>
+    <p class="meta mono">{education.school} · {education.year}</p>
+    <p>{education.minors}. {education.recognition}.</p>
+
+    <h2>Certifications</h2>
+    <ul>{education.certs.map((c) => <li>{c}</li>)}</ul>
+
+    <h2>Details</h2>
+    <p>{person.facts.join(' · ')}. Languages: {person.languages.join(', ')}.</p>
+  </article>
+</Page>

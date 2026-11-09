@@ -646,3 +646,7 @@ section { position: relative; }
   background: linear-gradient(180deg, var(--ink) 0%, rgba(237, 234, 227, 0.0) 85%); -webkit-background-clip: text; background-clip: text;
 }
 .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; color: var(--dim); }
+
+/* Internal links to the crawlable sub-pages */
+.case-more { display: inline-block; margin-top: 18px; color: var(--accent); border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+.case-more:hover { border-color: var(--accent); }
