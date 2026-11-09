@@ -11,8 +11,9 @@ interface Props {
   crumbs: { name: string; path?: string }[];
   schema?: Record<string, unknown>[];
   ogType?: string;
+  noindex?: boolean;
 }
-const { title, description, crumbs, schema = [], ogType = 'website' } = Astro.props;
+const { title, description, crumbs, schema = [], ogType = 'website', noindex = false } = Astro.props;
 
 const here = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const trail = [{ name: person.name, path: '/' }, ...crumbs.map((c) => ({ ...c, path: c.path ?? here }))];
@@ -31,11 +32,13 @@ const links = [
   { href: '/about/', label: 'About' },
   { href: '/resume/', label: 'Resume' },
   { href: '/projects/', label: 'Projects' },
+  { href: '/blog/', label: 'Blog' },
   { href: '/#contact', label: 'Contact' },
 ];
 const year = new Date().getFullYear();
 ---
-<Base title={title} description={description} schema={[breadcrumb, ...schema]} ogType={ogType}>
+<Base title={title} description={description} schema={[breadcrumb, ...schema]} ogType={ogType} noindex={noindex}>
+  <slot name="head" slot="head" />
   <header class="pg-nav">
     <div class="container pg-nav-inner">
       <a href="/" class="brand" aria-label={`${person.name} — home`}>
@@ -43,7 +46,7 @@ const year = new Date().getFullYear();
         <span class="brand-name">{person.name} <span>/ {person.role}</span></span>
       </a>
       <nav aria-label="Primary" class="pg-links mono">
-        {links.map((l) => <a href={l.href} aria-current={here === l.href ? 'page' : undefined}>{l.label}</a>)}
+        {links.map((l) => <a href={l.href} aria-current={here === l.href || (l.href !== '/' && here.startsWith(l.href)) ? 'page' : undefined}>{l.label}</a>)}
       </nav>
     </div>
   </header>
@@ -69,6 +72,7 @@ const year = new Date().getFullYear();
           <a href="/">Home</a>
           <a href="/about/">About</a>
           <a href="/resume/">Resume</a>
+          <a href="/blog/">Blog</a>
           {projects.map((p) => <a href={`/projects/${p.id}/`}>{p.title}</a>)}
           <a href={`mailto:${person.email}`}>Email</a>
           <a href={person.linkedin} target="_blank" rel="me noopener">LinkedIn</a>
@@ -108,5 +112,38 @@ const year = new Date().getFullYear();
   .pg .pg-cards strong { display: block; font-size: 20px; margin: 8px 0 6px; }
   .pg dl { display: grid; grid-template-columns: max-content 1fr; gap: 8px 24px; }
   .pg dt { color: var(--muted); }
+
+  /* ---- blog ---- */
+  .post-list { list-style: none; padding: 0; margin-top: 48px; display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .post-list a { display: grid; gap: 6px; padding: 26px 0; border-bottom: 1px solid var(--line); }
+  .post-list a:hover strong { color: var(--accent); }
+  .post-list strong { font-size: clamp(20px, 2.6vw, 26px); line-height: 1.25; transition: color 0.2s; }
+  .post-list span:not(.post-meta) { color: var(--ink-2); }
+  .post-meta { color: var(--muted); }
+  .pg h1.post-title { font-size: clamp(32px, 5.4vw, 56px); line-height: 1.05; text-transform: none; letter-spacing: -0.025em; font-variation-settings: 'wdth' 100; }
+  .post-toc { margin: 40px 0 0; padding: 20px 24px; border: 1px solid var(--line-2); border-radius: var(--radius); background: var(--surface); }
+  .post-toc p { color: var(--muted); }
+  .post-toc ol { margin-top: 8px; gap: 4px; }
+  .post-toc a:hover { color: var(--accent); }
+  .prose { margin-top: 40px; font-size: 18px; line-height: 1.75; }
+  .prose > * + * { margin-top: 1.1em; }
+  .prose h2 { scroll-margin-top: calc(var(--nav-h) + 16px); }
+  .prose h3 { scroll-margin-top: calc(var(--nav-h) + 16px); }
+  .prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  .prose strong { color: var(--ink); }
+  .prose blockquote { border-left: 2px solid var(--accent); padding: 4px 0 4px 20px; color: var(--ink); font-style: italic; }
+  .prose :not(pre) > code { font-family: var(--f-mono); font-size: 0.88em; background: var(--surface-2); border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; }
+  .prose pre { font-family: var(--f-mono); font-size: 14px; line-height: 1.6; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--line-2); overflow-x: auto; }
+  .prose img { border-radius: 12px; border: 1px solid var(--line); height: auto; }
+  .prose figcaption { color: var(--muted); font-size: 14px; margin-top: 8px; }
+  .prose table { width: 100%; border-collapse: collapse; font-size: 15px; display: block; overflow-x: auto; }
+  .prose th, .prose td { border-bottom: 1px solid var(--line-2); padding: 10px 12px; text-align: left; }
+  .prose th { color: var(--ink); }
+  .prose hr { border: 0; border-top: 1px solid var(--line); margin: 2.4em 0; }
+  .post-foot { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--line); display: grid; gap: 24px; }
+  .post-foot .tags { margin-top: 0; }
+  .post-author { display: flex; gap: 16px; align-items: flex-start; padding: 20px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+  .post-author .brand-mark { flex: none; }
+  .post-foot .pg-ctas { margin-top: 0; }
   @media (max-width: 560px) { .pg dl { grid-template-columns: 1fr; } .pg dd { margin-bottom: 8px; } }
 </style>

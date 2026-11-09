@@ -44,6 +44,19 @@ The downloadable CV is `public/Abdula_Adil_CV.pdf` — replace the file to updat
    Change `site` in `astro.config.mjs`, `site.url` in `profile.ts`, `robots.txt` and `llms.txt`, and 301 the vercel.app host to it.
 5. **A real headshot** at a stable URL (e.g. `public/abdula-adil.jpg`) used as the `Person` image helps Knowledge Panel / image results.
 
+## Blog
+
+Posts are Markdown files in `src/content/blog/` — the file name is the URL (`my-post.md` → `/blog/my-post/`).
+Start from `src/content/blog/_template.md` (files starting with `_` are never published); it explains every field.
+
+1. Copy the template, rename it (lowercase-with-dashes, main search phrase in the name), keep `draft: true`.
+2. `npm run dev` → http://localhost:4321/blog/ to preview (drafts show only in dev).
+3. Set `draft: false`, push to `main`. The post gets its own page, `BlogPosting` JSON-LD, article meta tags,
+   a sitemap entry and an RSS item (`/rss.xml`) automatically.
+4. Search Console → URL inspection → Request indexing for the new URL; share it on LinkedIn.
+
+Images go in `public/blog/<post-name>/`. Until the first post is published, `/blog/` is `noindex` and left out of the sitemap.
+
 ## Develop
 
 Requires Node ≥ 22.23.4.

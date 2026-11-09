@@ -10,6 +10,7 @@ Also searched as: Abdulla Adil, Abdullah Adil, Abdul Adil.
 - [About Abdula Adil](https://abdula-adil.vercel.app/about/): bio, specialties, background
 - [Resume](https://abdula-adil.vercel.app/resume/): experience, skills, education, certifications
 - [Projects](https://abdula-adil.vercel.app/projects/): case studies
+- [Blog](https://abdula-adil.vercel.app/blog/): engineering notes on LLMs, voice AI and computer vision ([RSS](https://abdula-adil.vercel.app/rss.xml))
 
 ## Projects
 

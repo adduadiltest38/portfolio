@@ -1,0 +1,94 @@
+---
+import { render } from 'astro:content';
+import Page from '../../layouts/Page.astro';
+import { person, site, projects } from '../../data/profile';
+import { getPosts, readingTime, fmtDate, isoDate, type Post } from '../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => ({ params: { slug: post.id }, props: { post, newer: posts[i - 1], older: posts[i + 1] } }));
+}
+interface Props { post: Post; newer?: Post; older?: Post }
+const { post, newer, older } = Astro.props;
+const { Content, headings } = await render(post);
+const d = post.data;
+const url = `${site.url}/blog/${post.id}/`;
+const toc = headings.filter((h) => h.depth === 2);
+const project = d.project ? projects.find((p) => p.id === d.project) : undefined;
+const minutes = readingTime(post.body);
+
+const article = {
+  '@type': 'BlogPosting',
+  '@id': `${url}#article`,
+  mainEntityOfPage: { '@id': `${url}#webpage` },
+  headline: d.title,
+  description: d.description,
+  url,
+  datePublished: isoDate(d.pubDate),
+  dateModified: isoDate(d.updatedDate ?? d.pubDate),
+  author: { '@id': `${site.url}/#person` },
+  publisher: { '@id': `${site.url}/#person` },
+  image: new URL(site.ogImage, site.url).href,
+  keywords: d.tags.join(', '),
+  wordCount: (post.body ?? '').split(/\s+/).filter(Boolean).length,
+  timeRequired: `PT${minutes}M`,
+  inLanguage: 'en',
+  isPartOf: { '@id': `${site.url}/blog/#blog` },
+};
+---
+<Page
+  title={`${d.title} | ${person.name}`}
+  description={d.description}
+  crumbs={[{ name: 'Blog', path: '/blog/' }, { name: d.title }]}
+  schema={[article]}
+  ogType="article"
+  noindex={d.draft}
+>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={d.pubDate.toISOString()} />
+    {d.updatedDate && <meta property="article:modified_time" content={d.updatedDate.toISOString()} />}
+    <meta property="article:author" content={`${site.url}/about/`} />
+    {d.tags.map((t) => <meta property="article:tag" content={t} />)}
+  </Fragment>
+
+  <article class="post">
+    <header>
+      <p class="mono accent">
+        <time datetime={isoDate(d.pubDate)}>{fmtDate(d.pubDate)}</time>
+        {d.updatedDate && <span> · Updated <time datetime={isoDate(d.updatedDate)}>{fmtDate(d.updatedDate)}</time></span>}
+        <span> · {minutes} min read</span>{d.draft && <b> · DRAFT — not published</b>}
+      </p>
+      <h1 class="post-title">{d.title}</h1>
+      <p class="lede">{d.description}</p>
+      <p class="meta mono">By <a href="/about/" rel="author">{person.name}</a> · {person.role}, {person.location}</p>
+    </header>
+
+    {toc.length >= 3 && (
+      <nav class="post-toc" aria-label="On this page">
+        <p class="mono">On this page</p>
+        <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+      </nav>
+    )}
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="post-foot">
+      {d.tags.length > 0 && <ul class="tags">{d.tags.map((t) => <li class="tag">{t}</li>)}</ul>}
+      {project && (
+        <p>Related project: <a class="accent" href={`/projects/${project.id}/`}>{project.title} — {project.lede}</a></p>
+      )}
+      <div class="post-author">
+        <span class="brand-mark" aria-hidden="true">AA</span>
+        <p><b>{person.name}</b> is an {person.role} in {person.location} building LLM, voice AI and computer-vision systems.{' '}
+          <a class="accent" href="/about/">More about {person.first}</a> · <a class="accent" href={person.linkedin} rel="me noopener" target="_blank">LinkedIn</a></p>
+      </div>
+      <nav class="pg-ctas" aria-label="More posts">
+        {older && <a class="btn" href={`/blog/${older.id}/`}>← {older.data.title}</a>}
+        {newer && <a class="btn" href={`/blog/${newer.id}/`}>{newer.data.title} →</a>}
+        <a class="btn" href="/blog/">All posts</a>
+      </nav>
+    </footer>
+  </article>
+</Page>

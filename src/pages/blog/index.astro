@@ -1,0 +1,43 @@
+---
+import Page from '../../layouts/Page.astro';
+import { person, site } from '../../data/profile';
+import { getPosts, readingTime, fmtDate, isoDate } from '../../lib/blog';
+
+const posts = await getPosts();
+const title = `Blog — ${person.name} on LLMs, Voice AI & Computer Vision`;
+const description = `Engineering notes by ${person.name}, AI Engineer in Abu Dhabi: building LLM, voice AI and computer-vision systems in production.`;
+const blog = {
+  '@type': 'Blog',
+  '@id': `${site.url}/blog/#blog`,
+  url: `${site.url}/blog/`,
+  name: `${person.name} — Blog`,
+  description,
+  author: { '@id': `${site.url}/#person` },
+  blogPost: posts.map((p) => ({ '@type': 'BlogPosting', headline: p.data.title, url: `${site.url}/blog/${p.id}/`, datePublished: isoDate(p.data.pubDate) })),
+};
+---
+<Page title={title} description={description} crumbs={[{ name: 'Blog' }]} schema={[blog]} noindex={posts.length === 0}>
+  <p class="mono accent">Engineering notes</p>
+  <h1>The <span class="serif">blog</span></h1>
+  <p class="lede">What I learn shipping LLM, voice AI and computer-vision systems for industrial teams — with the code, numbers and mistakes.</p>
+
+  {posts.length === 0 ? (
+    <p style="margin-top:48px" class="mono">First posts coming soon.</p>
+  ) : (
+    <ol class="post-list">
+      {posts.map((p) => (
+        <li>
+          <a href={`/blog/${p.id}/`}>
+            <span class="mono post-meta">
+              <time datetime={isoDate(p.data.pubDate)}>{fmtDate(p.data.pubDate)}</time> · {readingTime(p.body)} min read
+              {p.data.draft && <b class="accent"> · DRAFT</b>}
+            </span>
+            <strong>{p.data.title}</strong>
+            <span>{p.data.description}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  )}
+  <p class="mono" style="margin-top:40px"><a class="accent" href="/rss.xml">RSS feed</a></p>
+</Page>

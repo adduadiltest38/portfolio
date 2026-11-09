@@ -17,6 +17,7 @@ const links = [
     </a>
     <nav class="nav-links" aria-label="Primary">
       {links.map((l) => <a href={l.href} data-navlink>{l.label}</a>)}
+      <a href="/blog/">Blog</a>
     </nav>
     <div class="nav-right">
       <span class="clock mono" title="Local time in Abu Dhabi"><i></i>AUH <time data-clock>--:--</time></span>
@@ -30,6 +31,7 @@ const links = [
 <div class="menu" id="menu" data-menu>
   <nav aria-label="Mobile">
     {links.map((l, i) => <a href={l.href} data-menu-link><small>0{i + 1}</small>{l.label}</a>)}
+    <a href="/blog/"><small>0{links.length + 1}</small>Blog</a>
   </nav>
   <div class="menu-foot mono">
     <a href={`mailto:${person.email}`}>{person.email}</a>
