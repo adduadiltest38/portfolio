@@ -15,6 +15,8 @@ description: 'How I built hands-free voice chat for field engineers: Whisper spe
 pubDate: 2026-11-20
 # updatedDate: 2026-12-05   # add when you meaningfully update the post
 tags: ['Voice AI', 'Whisper', 'Kokoro', 'React Native']
+# image: '/blog/my-post/og.jpg'   # optional — 1200×630 JPG/PNG shown in LinkedIn/X link previews and as the Google article image
+# imageAlt: 'What the image shows'
 # project: plant            # optional — links the post to a case study: plant | pid | erp | aips
 draft: true
 ---

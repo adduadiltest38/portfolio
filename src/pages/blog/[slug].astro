@@ -28,7 +28,7 @@ const article = {
   dateModified: isoDate(d.updatedDate ?? d.pubDate),
   author: { '@id': `${site.url}/#person` },
   publisher: { '@id': `${site.url}/#person` },
-  image: new URL(site.ogImage, site.url).href,
+  image: new URL(d.image ?? site.ogImage, site.url).href,
   keywords: d.tags.join(', '),
   wordCount: (post.body ?? '').split(/\s+/).filter(Boolean).length,
   timeRequired: `PT${minutes}M`,
@@ -43,6 +43,8 @@ const article = {
   schema={[article]}
   ogType="article"
   noindex={d.draft}
+  image={d.image}
+  imageAlt={d.imageAlt}
 >
   <Fragment slot="head">
     <meta property="article:published_time" content={d.pubDate.toISOString()} />

@@ -12,6 +12,10 @@ Also searched as: Abdulla Adil, Abdullah Adil, Abdul Adil.
 - [Projects](https://abdula-adil.vercel.app/projects/): case studies
 - [Blog](https://abdula-adil.vercel.app/blog/): engineering notes on LLMs, voice AI and computer vision ([RSS](https://abdula-adil.vercel.app/rss.xml))
 
+## Blog posts
+
+- [Offline Edge AI for Offshore Oil & Gas: Laya on the Rig](https://abdula-adil.vercel.app/blog/laya-offline-ai-offshore-oil-gas/): design for offline System 1 triage of offshore field reports with Laya, escalating only hard questions to a local LLM
+
 ## Projects
 
 - [VAIL-Plant](https://abdula-adil.vercel.app/projects/plant/): enterprise AI assistant with real-time voice chat and a React Native mobile app

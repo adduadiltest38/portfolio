@@ -13,8 +13,10 @@ interface Props {
   schema?: Record<string, unknown>[];
   ogType?: string;
   noindex?: boolean;
+  image?: string;
+  imageAlt?: string;
 }
-const { title, description, crumbs, schema = [], ogType = 'website', noindex = false } = Astro.props;
+const { title, description, crumbs, schema = [], ogType = 'website', noindex = false, image, imageAlt } = Astro.props;
 
 const here = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const trail = [{ name: person.name, path: '/' }, ...crumbs.map((c) => ({ ...c, path: c.path ?? here }))];
@@ -38,7 +40,7 @@ const links = [
 ];
 const year = new Date().getFullYear();
 ---
-<Base title={title} description={description} schema={[breadcrumb, ...schema]} ogType={ogType} noindex={noindex}>
+<Base title={title} description={description} schema={[breadcrumb, ...schema]} ogType={ogType} noindex={noindex} image={image} imageAlt={imageAlt}>
   <slot name="head" slot="head" />
   <header class="pg-nav">
     <div class="container pg-nav-inner">

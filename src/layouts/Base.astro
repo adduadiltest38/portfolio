@@ -11,8 +11,11 @@ interface Props {
   /** og:type — 'profile' for the home page, 'article' / 'website' elsewhere. */
   ogType?: string;
   noindex?: boolean;
+  /** Share image for this page (og:image / twitter:image), 1200×630, path in public/. Defaults to the site image. */
+  image?: string;
+  imageAlt?: string;
 }
-const { title = site.title, description = site.description, schema = [], ogType = 'profile', noindex = false } = Astro.props;
+const { title = site.title, description = site.description, schema = [], ogType = 'profile', noindex = false, image, imageAlt } = Astro.props;
 // Canonical always ends in "/" so it matches the URLs in the sitemap (Astro's default directory build format).
 const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonical = new URL(path, Astro.site).href;
@@ -21,6 +24,8 @@ const feed = await hasPosts();
 const fonts =
   'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap';
 const ogImage = new URL(site.ogImage, Astro.site).href;
+const shareImage = new URL(image ?? site.ogImage, Astro.site).href;
+const shareAlt = imageAlt ?? 'Abdula Adil — AI Engineer. LLM · Voice AI · Computer Vision. Abu Dhabi, UAE.';
 
 const knowsAbout = [
   'Large Language Models', 'LLM integration', 'Retrieval-Augmented Generation', 'NL to SQL',
@@ -119,17 +124,17 @@ const jsonLd = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={shareImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Abdula Adil — AI Engineer. LLM · Voice AI · Computer Vision. Abu Dhabi, UAE." />
+    <meta property="og:image:alt" content={shareAlt} />
     <meta property="og:locale" content="en_US" />
     {ogType === 'profile' && <meta property="profile:first_name" content={person.first} />}
     {ogType === 'profile' && <meta property="profile:last_name" content={person.last} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={shareImage} />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

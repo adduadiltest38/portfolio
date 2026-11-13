@@ -1,8 +1,10 @@
 ---
-title: 'Laya on the Rig: Fast, Offline AI Decisions for Offshore Oil & Gas'
-description: 'How Laya, a small open-weight System 1 model, could triage offshore field reports offline in milliseconds and pass only the hard questions to a local LLM.'
+title: 'Offline Edge AI for Offshore Oil & Gas: Laya on the Rig'
+description: 'How Laya, a small open-weight System 1 model, could triage offshore oil and gas field reports offline at the edge and send only hard questions to a local LLM.'
 pubDate: 2026-11-13
-tags: ['AI', 'Edge AI', 'Oil and Gas', 'Offshore', 'LLM', 'System 1', 'Laya']
+tags: ['Edge AI', 'Oil and Gas', 'Offshore', 'LLM', 'RAG', 'System 1', 'Laya']
+image: '/blog/laya-offline-ai-offshore-oil-gas/og.jpg'
+imageAlt: 'Offshore technician using a tablet on a platform deck at sunset, linked to an edge server rack and the control room'
 draft: false
 ---
 
@@ -10,11 +12,22 @@ Picture a technician on an offshore platform. He's walking past a gas compressor
 
 What happens next depends on the software behind that tablet.
 
-![Offshore technician in orange coveralls and a hard hat using a tablet on a platform deck at sunset, with glowing lines linking the tablet to an edge server rack and the control room](/blog/laya-offline-ai-offshore-oil-gas/offshore-technician-edge-ai.webp)
+<figure>
+  <img src="/blog/laya-offline-ai-offshore-oil-gas/offshore-technician-edge-ai.webp" alt="Offshore technician in orange coveralls and a hard hat using a tablet on a platform deck at sunset, with glowing lines linking the tablet to an edge server rack and the control room" width="1672" height="941" loading="lazy" decoding="async" />
+  <figcaption>A field report typed on deck, sorted by a model running in the platform’s own equipment room. Illustration.</figcaption>
+</figure>
 
 On many platforms the note joins a queue. Someone reads it when they get to it, or it's sent over a slow satellite link to a system onshore. Large language models (LLMs) are very good at answering questions like his. But running a big model on every log line, offshore, with limited bandwidth and very little GPU capacity, isn't realistic.
 
-In this post I'll walk through a design that splits the work in two. A small, fast model called **Laya** sorts every message on the platform itself, and a larger model is used only when real reasoning is needed.
+In this post I'll walk through an edge AI design for offshore oil and gas that splits the work in two. A small, fast model called **Laya** sorts every message on the platform itself, and a larger model is used only when real reasoning is needed.
+
+## Key takeaways
+
+- **Laya is a small, open-weight System 1 model.** It answers typed questions in one forward pass (about 33–40 ms on a T4 GPU) and never generates text.
+- **It can run offline at the edge.** Every field report is sorted on a server on the platform itself, with no satellite link involved.
+- **Deterministic rules act on its answers:** alert the control room, file a structured log entry, or escalate to a local LLM.
+- **It is not zero-shot.** You have to fine-tune and calibrate it on your own data before its probabilities can be trusted.
+- **It stays advisory.** It sits outside the safety-instrumented and fire-and-gas systems, and a human confirms every response.
 
 ## What is Laya?
 
@@ -37,7 +50,7 @@ Some numbers from the model card:
 
 Compared with an LLM, that's small enough to run on an ordinary server sitting in the platform's equipment room, with no internet connection.
 
-## System 1 and System 2
+## System 1 vs System 2: fast triage, slow reasoning
 
 The idea comes from psychology. **System 1** is fast and intuitive: you glance at a face and know if someone is angry. **System 2** is slow and deliberate: working out a tax return.
 
@@ -48,11 +61,14 @@ In software:
 
 Laya's output becomes **structured input for the LLM**. The LLM doesn't have to work out what the message is about; it already knows the equipment type, the urgency, and whether there's a safety concern.
 
-## The offshore scenario: triaging field reports
+## The offshore architecture: triaging field reports at the edge
 
 Here's how the technician's note would flow through the system.
 
-![Isometric diagram: a technician's report flows from the platform to a small edge model, which routes it three ways — to the control room alarm, to a log archive, or to a local LLM with procedure documents](/blog/laya-offline-ai-offshore-oil-gas/laya-triage-architecture.webp)
+<figure>
+  <a href="/blog/laya-offline-ai-offshore-oil-gas/laya-system1-system2-architecture.webp"><img src="/blog/laya-offline-ai-offshore-oil-gas/laya-system1-system2-architecture.webp" alt="Architecture diagram of Laya on an offshore platform: technician notes, shift handover logs and alarm events enter the Laya router (System 1) on an offline edge server; a rules engine sends each item to a control-room alert, a structured log entry or a local LLM (System 2) fed by retrieval filtered by equipment class; records sync onshore by satellite, and a loop of labelling, fine-tuning, calibration, shadow-mode trial and monitoring keeps it trustworthy" width="2000" height="1325" loading="lazy" decoding="async" /></a>
+  <figcaption>The full System 1 + System 2 architecture. Everything inside the dashed box runs offline on the platform’s edge server. Click to open full size.</figcaption>
+</figure>
 
 ### Step 1: Laya reads every report, offline
 
@@ -114,6 +130,11 @@ Plain, deterministic code decides what happens next. No LLM is involved at this 
 - **Routine observation:** save it as a structured log entry and stop there.
 - **Anything else:** pass it to System 2.
 
+<figure>
+  <img src="/blog/laya-offline-ai-offshore-oil-gas/laya-triage-architecture.webp" alt="Isometric illustration: a technician’s report flows from the platform to a small edge model, which routes it three ways — to the control room alarm, to a log archive, or to a local LLM with procedure documents" width="1672" height="941" loading="lazy" decoding="async" />
+  <figcaption>One report, three possible routes: control-room alert, structured log entry, or the local LLM with the right procedures.</figcaption>
+</figure>
+
 ### Step 3: A local LLM writes the answer
 
 The System 2 model runs on the platform too (for example, a quantised 7–8B open model). It receives three things:
@@ -122,13 +143,13 @@ The System 2 model runs on the platform too (for example, a quantised 7–8B ope
 2. Laya's structured answers and their confidence scores
 3. procedures and manuals retrieved **only for that equipment class**, such as compressor SOPs and past work orders for K-201
 
-With that context, it can write a short, specific checklist: move upwind, wait for the control room's instructions, get a gas test, and don't start work without a permit. Because Laya already narrowed down the equipment type, the retrieval step searches a much smaller pool of documents and is less likely to pull in something irrelevant.
+With that context, it can write a short, specific checklist: move upwind, wait for the control room's instructions, get a gas test, and don't start work without a permit. Because Laya already narrowed down the equipment type, the retrieval (RAG) step searches a much smaller pool of documents and is less likely to pull in something irrelevant.
 
 ### Step 4: Sync when the link is up
 
 When the satellite connection is available, the structured records sync onshore, where reliability engineers can look for patterns across the fleet.
 
-## Why this split works
+## Why this split works offshore
 
 - **Most traffic never touches the expensive model.** Routine logs are classified and filed in milliseconds.
 - **Safety-relevant routing is fast and auditable.** Every decision has a probability attached and a clear rule behind it.
@@ -163,6 +184,8 @@ Most discussion about AI in industry focuses on large models. On an offshore pla
 Laya is a good fit for that role. It's open, small, fast, multilingual, and it returns calibrated probabilities instead of free text. Paired with a local LLM for the hard questions, it points to an architecture where every report gets looked at in milliseconds, urgent ones reach people right away, and the expensive reasoning is saved for where it actually helps.
 
 The model is only the starting point, though. The real work is in the data, the calibration, and a careful rollout.
+
+Related on this site: a [browser simulation of this two-tier design](/#research), and two industrial AI systems I work on — [VAIL-Plant](/projects/plant/), an AI assistant field engineers can talk to, and [P&ID → 3D](/projects/pid/), which turns engineering drawings into 3D plant models.
 
 *This post describes a design concept, not a production deployment. The platform scenario is illustrative.*
 

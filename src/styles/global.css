@@ -556,6 +556,7 @@ section { position: relative; }
 .sys p { color: var(--muted); }
 .sys-wide { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 12px 40px; justify-content: space-between; align-items: center; background: transparent; }
 .sys-wide p { color: var(--ink-2); max-width: 760px; }
+.sys-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
 @media (max-width: 760px) { .systems { grid-template-columns: 1fr; } }
 
 /* ==========================================================================

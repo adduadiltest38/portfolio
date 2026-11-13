@@ -15,6 +15,9 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
+    /** Optional share image (link previews on LinkedIn/X, Google article image): a 1200×630 JPG or PNG in public/, e.g. '/blog/my-post/og.jpg'. */
+    image: z.string().startsWith('/').optional(),
+    imageAlt: z.string().optional(),
     /** Optional link to a project case study: plant | pid | erp | aips */
     project: z.enum(['plant', 'pid', 'erp', 'aips']).optional(),
     /** Drafts show in `npm run dev` but are never published. */
