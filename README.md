@@ -55,7 +55,8 @@ Start from `src/content/blog/_template.md` (files starting with `_` are never pu
    a sitemap entry and an RSS item (`/rss.xml`) automatically.
 4. Search Console → URL inspection → Request indexing for the new URL; share it on LinkedIn.
 
-Images go in `public/blog/<post-name>/`. Until the first post is published, `/blog/` is `noindex` and left out of the sitemap.
+Images go in `public/blog/<post-name>/`. Until the first post is published, `/blog/` is `noindex`, left out of the sitemap, and not linked from the nav, footer or RSS
+autodiscovery tag (`hasPosts()` in `src/lib/blog.ts`) — the links come back automatically with the first published post.
 
 ## Develop
 

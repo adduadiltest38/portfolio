@@ -3,6 +3,7 @@
 // No preloader, WebGL or scroll-jacking: fast, text-first pages that rank on their own and link back home.
 import Base from './Base.astro';
 import { person, site, projects } from '../data/profile';
+import { hasPosts } from '../lib/blog';
 
 interface Props {
   title: string;
@@ -32,7 +33,7 @@ const links = [
   { href: '/about/', label: 'About' },
   { href: '/resume/', label: 'Resume' },
   { href: '/projects/', label: 'Projects' },
-  { href: '/blog/', label: 'Blog' },
+  ...((await hasPosts()) ? [{ href: '/blog/', label: 'Blog' }] : []),
   { href: '/#contact', label: 'Contact' },
 ];
 const year = new Date().getFullYear();
@@ -72,7 +73,7 @@ const year = new Date().getFullYear();
           <a href="/">Home</a>
           <a href="/about/">About</a>
           <a href="/resume/">Resume</a>
-          <a href="/blog/">Blog</a>
+          {links.some((l) => l.href === '/blog/') && <a href="/blog/">Blog</a>}
           {projects.map((p) => <a href={`/projects/${p.id}/`}>{p.title}</a>)}
           <a href={`mailto:${person.email}`}>Email</a>
           <a href={person.linkedin} target="_blank" rel="me noopener">LinkedIn</a>

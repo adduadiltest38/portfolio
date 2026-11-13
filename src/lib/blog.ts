@@ -8,6 +8,13 @@ export async function getPosts(): Promise<Post[]> {
   return posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 }
 
+/**
+ * True once at least one post is published. Until then /blog/ is a `noindex` placeholder, so nothing
+ * should link to it (or to the empty RSS feed) — internal links to a noindex page are what make
+ * Search Console report "Excluded by 'noindex' tag".
+ */
+export const hasPosts = async (): Promise<boolean> => (await getPosts()).length > 0;
+
 export function readingTime(markdown = ''): number {
   const words = markdown.replace(/```[\s\S]*?```/g, ' ').split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 220));

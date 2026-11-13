@@ -1,5 +1,7 @@
 ---
 import { person } from '../data/profile';
+import { hasPosts } from '../lib/blog';
+const blog = await hasPosts();
 const year = new Date().getFullYear();
 ---
 <footer class="footer">
@@ -10,7 +12,7 @@ const year = new Date().getFullYear();
         <a href="/about/">About</a>
         <a href="/resume/">Resume</a>
         <a href="/projects/">Projects</a>
-        <a href="/blog/">Blog</a>
+        {blog && <a href="/blog/">Blog</a>}
         <a href={`mailto:${person.email}`}>Email</a>
         <a href={person.linkedin} target="_blank" rel="me noopener">LinkedIn</a>
         <a href="#top">Back to top ↑</a>

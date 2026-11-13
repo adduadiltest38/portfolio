@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { site, person, education, capabilities, experience } from '../data/profile';
+import { hasPosts } from '../lib/blog';
 
 interface Props {
   title?: string;
@@ -16,6 +17,7 @@ const { title = site.title, description = site.description, schema = [], ogType 
 const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonical = new URL(path, Astro.site).href;
 const isHome = path === '/';
+const feed = await hasPosts();
 const fonts =
   'https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap';
 const ogImage = new URL(site.ogImage, Astro.site).href;
@@ -134,7 +136,7 @@ const jsonLd = {
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
     <link rel="me" href={person.linkedin} />
-    <link rel="alternate" type="application/rss+xml" title={`${person.name} — Blog`} href="/rss.xml" />
+    {feed && <link rel="alternate" type="application/rss+xml" title={`${person.name} — Blog`} href="/rss.xml" />}
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
