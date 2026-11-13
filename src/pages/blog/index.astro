@@ -1,7 +1,7 @@
 ---
 import Page from '../../layouts/Page.astro';
 import { person, site } from '../../data/profile';
-import { getPosts, readingTime, fmtDate, isoDate } from '../../lib/blog';
+import { getPosts, readingTime, fmtDate, isoDate, isScheduled } from '../../lib/blog';
 
 const posts = await getPosts();
 const title = `Blog — ${person.name} on LLMs, Voice AI & Computer Vision`;
@@ -31,6 +31,7 @@ const blog = {
             <span class="mono post-meta">
               <time datetime={isoDate(p.data.pubDate)}>{fmtDate(p.data.pubDate)}</time> · {readingTime(p.body)} min read
               {p.data.draft && <b class="accent"> · DRAFT</b>}
+              {!p.data.draft && isScheduled(p.data.pubDate) && <b class="accent"> · SCHEDULED</b>}
             </span>
             <strong>{p.data.title}</strong>
             <span>{p.data.description}</span>

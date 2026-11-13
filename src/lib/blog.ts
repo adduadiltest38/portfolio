@@ -2,9 +2,16 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Post = CollectionEntry<'blog'>;
 
-/** Published posts, newest first. Drafts are included only in `astro dev`. */
+/** True when a post's `pubDate` is still in the future at build time. */
+export const isScheduled = (pubDate: Date) => pubDate.valueOf() > Date.now();
+
+/**
+ * Published posts, newest first. A post is published when it is not a draft and its `pubDate` has arrived,
+ * so a post dated next week can be committed today and appears with the first deploy on or after that date.
+ * Drafts and scheduled posts are included only in `astro dev`.
+ */
 export async function getPosts(): Promise<Post[]> {
-  const posts = await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft);
+  const posts = await getCollection('blog', ({ data }) => import.meta.env.DEV || (!data.draft && !isScheduled(data.pubDate)));
   return posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 }
 

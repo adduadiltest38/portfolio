@@ -9,8 +9,14 @@ const lastmod = new Date();
 
 // Keep the empty /blog/ page out of the sitemap (it is also noindex) until the first post is published.
 const blogDir = new URL('./src/content/blog/', import.meta.url);
+// A post counts once it is not a draft and its pubDate has arrived (same rule as getPosts() in src/lib/blog.ts).
+const isPublished = (src) => {
+  if (/^draft:\s*true\s*$/m.test(src)) return false;
+  const date = src.match(/^pubDate:\s*['"]?([^'"\s#]+)/m)?.[1];
+  return !date || new Date(date) <= lastmod;
+};
 const hasPosts = readdirSync(blogDir).some(
-  (f) => f.endsWith('.md') && !f.startsWith('_') && !/^draft:\s*true\s*$/m.test(readFileSync(new URL(f, blogDir), 'utf8')),
+  (f) => f.endsWith('.md') && !f.startsWith('_') && isPublished(readFileSync(new URL(f, blogDir), 'utf8')),
 );
 
 export default defineConfig({

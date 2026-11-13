@@ -12,6 +12,7 @@
 title: 'Real-time voice assistant with Whisper and Kokoro in React Native'
 # Description: 120–160 characters. This is the grey text under the link in Google — make people want to click.
 description: 'How I built hands-free voice chat for field engineers: Whisper speech-to-text, Kokoro text-to-speech and a React Native client — with latency numbers.'
+# A future date schedules the post: it stays hidden until the first deploy on or after that day.
 pubDate: 2026-11-20
 # updatedDate: 2026-12-05   # add when you meaningfully update the post
 tags: ['Voice AI', 'Whisper', 'Kokoro', 'React Native']

@@ -148,5 +148,8 @@ const year = new Date().getFullYear();
   .post-author { display: flex; gap: 16px; align-items: flex-start; padding: 20px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
   .post-author .brand-mark { flex: none; }
   .post-foot .pg-ctas { margin-top: 0; }
+  /* Previous/next links carry full post titles: let them wrap instead of forcing the page wider on phones. */
+  .post-foot { grid-template-columns: minmax(0, 1fr); }
+  .post-foot .pg-ctas .btn { height: auto; min-height: var(--h); max-width: 100%; padding-block: 14px; white-space: normal; text-align: left; line-height: 1.45; border-radius: 18px; }
   @media (max-width: 560px) { .pg dl { grid-template-columns: 1fr; } .pg dd { margin-bottom: 8px; } }
 </style>
