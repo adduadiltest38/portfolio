@@ -415,6 +415,8 @@ section { position: relative; }
   transform-origin: center top; overflow: hidden;
   box-shadow: 0 -30px 60px -30px rgba(0, 0, 0, 0.8);
 }
+/* Scroll-driven dimming layer (see motion.ts) — opacity only, so it stays on the compositor */
+.case-dim { position: absolute; inset: 0; z-index: 2; background: #000; opacity: 0; pointer-events: none; will-change: opacity; }
 .case:nth-child(2) { background: #17171a; }
 .case:nth-child(3) { background: #19191c; }
 .case:nth-child(4) { background: #1b1b1e; }

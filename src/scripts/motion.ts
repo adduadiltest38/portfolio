@@ -275,10 +275,15 @@ function scrollMotion() {
     cases.forEach((card, i) => {
       const next = cases[i + 1];
       if (!next) return;
-      gsap.to(card, {
-        scale: 0.93, filter: 'brightness(0.55)', ease: 'none',
+      // Dim with an opacity overlay, not `filter: brightness()` — a scrubbed filter
+      // re-rasterises the whole card (and its live demo) on every scroll frame.
+      const dim = $('.case-dim', card);
+      gsap.timeline({
+        defaults: { ease: 'none' },
         scrollTrigger: { trigger: next, start: 'top bottom', end: 'top 20%', scrub: true },
-      });
+      })
+        .to(card, { scale: 0.93 }, 0)
+        .to(dim, { opacity: 0.45 }, 0);
     });
   });
 
